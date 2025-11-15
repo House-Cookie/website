@@ -1,0 +1,354 @@
+:root {
+  --blue: #c9efff;
+  --red: #0fd5f3;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Fondo general de la página */
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* CAMBIO: 'center' en lugar de 'flex-start' para centrar verticalmente 
+  */
+  justify-content: center;
+  /* CAMBIO: Se eliminó el 'gap: 2rem;' de aquí. 
+    Se moverá al nuevo .content-wrapper 
+  */
+  overflow-x: hidden;
+  /* background: url('images/bg.png') center/cover no-repeat fixed; */ /* <-- CAMBIO: Esta línea fue eliminada */
+
+  /* --- NUEVO: Propiedades de fondo compartidas --- */
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  /* Añadimos una transición suave para el cambio de fondo */
+  transition: background-image 0.5s ease-in-out;
+
+  /*
+    --- ¡NUEVO CAMBIO! ---
+    Cursor personalizado para escritorio.
+    ¡Recuerda cambiar 'mi-cursor.png' por el nombre de tu imagen!
+  */
+  cursor: url('images/cursor.png'), auto;
+}
+
+/* --- NUEVA CLASE DE DÍA --- */
+body.day-bg {
+  background-image: url('images/bg.png');
+}
+
+/* --- NUEVA CLASE DE NOCHE --- */
+body.night-bg {
+  background-image: url('images/bgnight.png');
+}
+
+
+/* NUEVA CLASE: Este es el contenedor que agrupa el contenido.
+  Hereda el 'gap' y otras propiedades que antes tenía el body.
+*/
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem; /* El gap que quitamos del body va aquí */
+  /* Añadimos un padding por si el contenido es muy alto y se pega al dock */
+  padding-bottom: 120px; 
+}
+
+/* Animación flotante sincronizada */
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+/* Encabezado */
+header {
+  position: relative;
+  background: var(--blue);
+  padding: 1rem 3rem;
+  border-radius: 2rem;
+  /* CAMBIO: Se eliminó 'margin-top: 2rem;'
+    Ahora el espaciado lo maneja el 'gap' del .content-wrapper
+  */
+}
+header h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+header .sticker {
+  position: absolute;
+  left: -60px;
+  top: -35px;
+  transform: rotate(-20deg);
+  width: 150px; /* Ajusta el tamaño según tu PNG */
+}
+
+/* Imagen central */
+.hero-img {
+  width: 300px;
+  height: 300px;
+  border-radius: 25%;
+  overflow: hidden;
+  background: var(--blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Bio */
+.bio {
+  /* Añadido position: relative para posicionar la flecha */
+  position: relative;
+  width: 400px;
+  background: var(--blue);
+  padding: 2rem;
+  border-radius: 2rem;
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* --- ESTILOS DE FLECHA ACTUALIZADOS --- */
+#bio-arrow {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  top: 10px;
+  font-size: 6rem;
+  color: red;
+  right: -60px;
+  transform: rotate(45deg);
+  
+  /* CORRECCIÓN (Fade-out):
+    Opacidad transiciona 1s.
+    Visibilidad espera 1s ANTES de ocultarse.
+  */
+  transition: opacity 1s ease, visibility 0s linear 1s;
+}
+
+#bio-arrow.show {
+  opacity: 1;
+  visibility: visible;
+  /* CORRECCIÓN (Fade-in):
+    Opacidad transiciona 1s.
+    Visibilidad aparece INMEDIATAMENTE.
+  */
+  transition: opacity 1s ease, visibility 0s linear 0s;
+}
+/* --- FIN de estilos de flecha --- */
+
+
+/* Dock de redes sociales */
+.dock {
+  background: var(--blue);
+  padding: 0.5rem 2rem;
+  border-radius: 2rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  /* Esto ya estaba bien (position: fixed) */
+  position: fixed;
+  bottom: 2rem;
+}
+.dock a {
+  color: #fff;
+  background: var(--red);
+  width: 60px;
+  height: 60px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  transition: transform 0.3s;
+}
+.dock a:hover {
+  transform: translateY(-10px);
+}
+
+/* Toggle (icono de hamburguesa) */
+.menu-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background: var(--blue);
+  width: 60px;
+  height: 120px;
+  border-radius: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+.menu-toggle span {
+  display: block;
+  width: 30px;
+  height: 4px;
+  background: #000;
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+/* Menú lateral */
+aside.menu {
+  position: fixed;
+  top: 150px;
+  right: -250px;
+  width: 220px;
+  background: var(--blue);
+  border-radius: 2rem;
+  padding: 2rem;
+  transition: right 0.5s;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+aside.menu.open {
+  right: 2rem;
+}
+aside.menu a {
+  text-decoration: none;
+  color: #000;
+  font-size: 1.2rem;
+}
+
+/* ===================================================================
+  --- INICIO DE NUEVOS ESTILOS PARA MÓVIL ---
+  (He elegido 700px como el límite para "móvil")
+  ===================================================================
+*/
+
+@media (max-width: 700px) {
+
+  /* 1. Hacemos que el contenido se alinee arriba en lugar de al centro */
+  body {
+    justify-content: flex-start;
+    
+    /* --- ¡NUEVO CAMBIO! --- 
+      Reseteamos el cursor a la normalidad en la versión móvil
+    */
+    cursor: auto;
+  }
+  
+  /* 2. Ocultamos el botón de hamburguesa */
+  .menu-toggle {
+    display: none;
+  }
+
+  /* 3. Re-ordenamos el menú para que aparezca primero */
+  aside.menu {
+    order: -1; /* Esto lo mueve antes que el .content-wrapper */
+  }
+
+  /* 4. Cambiamos el estilo del menú lateral para que sea una barra de texto simple */
+  /* Usamos "aside.menu, aside.menu.open" para anular la clase .open */
+  aside.menu, aside.menu.open {
+    position: static; /* Quitamos el 'position: fixed' */
+    right: auto; /* Reseteamos la posición */
+    width: auto; /* Dejamos que se ajuste al contenido */
+    background: transparent; /* Quitamos el fondo azul */
+    border-radius: 0; /* Quitamos los bordes redondeados */
+    padding: 1rem 0; /* Añadimos espacio arriba y abajo */
+    
+    flex-direction: row; /* Ponemos los enlaces uno al lado del otro */
+    justify-content: center; /* Centramos los enlaces */
+    gap: 2rem; /* Espacio entre "Inicio" y "Acerca de" */
+    
+    transition: none; /* Quitamos la animación de deslizar */
+  }
+
+  /* 5. Cambiamos el color de los enlaces para que se vean bien sobre el fondo */
+  aside.menu a {
+    color: white;
+    font-weight: 600;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6); /* Sombra para legibilidad */
+  }
+
+  /* 6. Ajustes menores para que el contenido se vea bien */
+  .content-wrapper {
+    /* Damos un poco de padding superior para que el header no esté pegado */
+    padding-top: 1rem;
+    /* Reducimos el padding inferior en móvil */
+    padding-bottom: 100px;
+  }
+
+  /* 7. Reducimos el tamaño de la bio en pantallas pequeñas */
+  .bio {
+    width: 90%; /* Hacemos la bio más adaptable */
+    max-width: 400px;
+    padding: 1.5rem;
+  }
+
+  /* 8. Reducimos el tamaño del header en pantallas pequeñas */
+  header {
+    padding: 1rem 2rem;
+  }
+  header h1 {
+    font-size: 2rem;
+  }
+  header .sticker {
+    width: 100px;
+    left: -30px;
+    top: -20px;
+  }
+
+  /* 9. Reducimos el dock en pantallas pequeñas */
+  .dock {
+    padding: 0.5rem 1rem;
+    gap: 1rem;
+  }
+  .dock a {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+
+  /* ========================================================
+    --- ¡NUEVO CAMBIO! (Paso 10) ---
+    Estilos de la flecha de la Bio SÓLO para móvil
+    ========================================================
+  */
+  #bio-arrow {
+    /* Reseteamos la posición de escritorio (top y right) */
+    top: auto;
+    right: auto;
+    
+    /* La posicionamos ABAJO de la bio */
+    bottom: -60px; /* 60px por debajo del borde de la bio */
+    
+    /* La centramos horizontalmente */
+    left: 50%;
+    
+    /* Centramos (translateX) y 
+      giramos la flecha (que es 'fa-arrow-down') 180 grados 
+      para que apunte HACIA ARRIBA 
+    */
+    transform: translateX(-50%) rotate(180deg);
+    
+    font-size: 5rem; /* La hacemos un poco más pequeña */
+  }
+
+} /* <-- Llave de cierre del @media (MUY IMPORTANTE) */
+
+/* --- FIN DE NUEVOS ESTILOS PARA MÓVIL --- */

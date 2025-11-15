@@ -1,0 +1,109 @@
+/* Estilos para la página 404
+  Usamos las mismas variables y fuentes de tu style.css
+  para mantener la coherencia.
+*/
+:root {
+  --blue: #c9efff;
+  --red: #0fd5f3; /* Este es el color cian de tus botones */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  /* Usamos el fondo de día que pediste */
+  background-image: url('images/bg.png');
+  
+  /* Propiedades de fondo consistentes con tu web */
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  /* Centramos todo el contenido vertical y horizontalmente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+/* Contenedor principal para centrar los elementos 
+  y darles un fondo.
+*/
+.container {
+  display: flex;
+  flex-direction: column; /* Apila los elementos verticalmente */
+  align-items: center;     /* Centra horizontalmente */
+  text-align: center;
+
+  /* Usamos el color azul de tu paleta con transparencia */
+  background-color: rgba(201, 239, 255, 0.9); /* #c9efff */
+  padding: 2.5rem;
+  border-radius: 2rem; /* Mismo borde que tu header y bio */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* --- ESTE ES EL CAMBIO ---
+  Ya no usamos "img", sino la nueva clase ".error-image".
+  La imagen se pone como fondo.
+*/
+.container .error-image {
+  /* Ajusta el width y max-width para que coincida 
+    con el tamaño de tu "404.png". 300px es un buen punto de partida.
+  */
+  width: 100%;
+  max-width: 300px;
+  
+  /* ¡IMPORTANTE! Ajusta el 'aspect-ratio'.
+    Si tu imagen "404.png" es cuadrada, usa: 1 / 1
+    Si es más alta que ancha, (ej: 3:4), usa: 3 / 4
+    Si es más ancha que alta, (ej: 16:9), usa: 16 / 9
+    
+    Estoy usando 1 / 1 (cuadrada) como ejemplo.
+  */
+  aspect-ratio: 1 / 1; 
+
+  margin-bottom: 1rem;
+
+  /* Propiedades del fondo */
+  background-image: url('images/404.png');
+  background-size: contain; /* 'contain' la ajusta sin cortarla */
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+
+/* El texto "404 not found" */
+.container h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+/* El botón de "regresar al inicio" */
+.btn-regresar {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  
+  /* Usamos el color --red (cian) de tu dock */
+  background-color: var(--red);
+  color: #fff;
+  
+  padding: 0.75rem 1.5rem;
+  border-radius: 15px; /* Mismo borde que los botones del dock */
+  
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-regresar:hover {
+  transform: translateY(-5px); /* Efecto de hover de tu dock */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
