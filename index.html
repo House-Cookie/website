@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- ══ SEO básico ══ -->
+  <title>House Cookie</title>
+  <meta name="description" content="Edita la descripción aquí">
+  <meta name="keywords" content="House Cookie, edita, tus, keywords, aquí">
+  <meta name="author" content="House Cookie">
+  <meta name="robots" content="index, follow">
+
+  <!-- ══ Open Graph (Facebook, Discord, WhatsApp, etc.) ══ -->
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://housethecookie.com/">
+  <meta property="og:title"       content="House Cookie">
+  <meta property="og:description" content="Edita la descripción aquí">
+  <meta property="og:image"       content="https://housethecookie.com/src/perfil.png">
+  <meta property="og:image:width"  content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:locale"      content="es_MX">
+
+  <!-- ══ Twitter / X Card ══ -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:url"         content="https://housethecookie.com/">
+  <meta name="twitter:title"       content="House Cookie">
+  <meta name="twitter:description" content="Edita la descripción aquí">
+  <meta name="twitter:image"       content="https://housethecookie.com/src/perfil.png">
+
+  <!-- ══ Favicon ══ -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="shortcut icon" href="favicon.ico">
+  <style>
+    @font-face {
+      font-family: 'MiFuente';
+      src: url('src/mifuente.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%; height: 100%;
+      background-color: #00b140;
+      background-image: url('src/bg.png');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      font-family: 'MiFuente', 'Arial Rounded MT Bold', Arial, sans-serif;
+    }
+
+    /* ── Botón menú ── */
+    .menu-btn {
+      position: fixed; top: 18px; right: 18px;
+      width: 90px; height: 90px;
+      cursor: pointer; user-select: none; z-index: 100;
+      transition: transform 0.12s ease, filter 0.12s ease;
+      filter: drop-shadow(0px 6px 0px rgba(0,0,0,0.35)) drop-shadow(0px 2px 8px rgba(0,0,0,0.3));
+    }
+    .menu-btn:hover { transform: translateY(-2px) scale(1.05); }
+    .menu-btn.pressed { transform: translateY(3px) scale(0.97); }
+
+    /* ── Overlay ── */
+    .overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.38);
+      z-index: 98; opacity: 0; pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .overlay.open { opacity: 1; pointer-events: all; }
+
+    /* ── Menú lateral ── */
+    .dropdown {
+      position: fixed; top: 0; right: 0;
+      width: min(72vw, 290px); height: 100vh;
+      z-index: 99;
+      background: linear-gradient(180deg, #2c4260 0%, #1e3048 55%, #18273c 100%);
+      border-left: 3px solid #13202f;
+      box-shadow: -8px 0 32px rgba(0,0,0,0.6);
+      display: flex; flex-direction: column; padding-top: 130px;
+      transform: translateX(110%); opacity: 0; pointer-events: none;
+      transition: transform 0.28s cubic-bezier(0.34,1.20,0.64,1), opacity 0.20s ease;
+    }
+    .dropdown::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 220px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0) 100%);
+      pointer-events: none;
+    }
+    .dropdown.open { transform: translateX(0); opacity: 1; pointer-events: all; }
+    .dropdown a {
+      display: block; padding: 22px 34px; color: #c8dfef;
+      font-family: 'MiFuente', 'Arial Rounded MT Bold', Arial, sans-serif;
+      font-size: 22px; font-weight: 800; letter-spacing: 0.05em;
+      text-decoration: none; text-shadow: 0 2px 6px rgba(0,0,0,0.55);
+      border-bottom: 1.5px solid rgba(255,255,255,0.07);
+      transition: background 0.13s, color 0.13s, padding-left 0.13s;
+    }
+    .dropdown a:hover  { background: rgba(255,255,255,0.10); color: #fff; padding-left: 44px; }
+    .dropdown a:active { background: rgba(0,0,0,0.18); }
+    .dropdown.open a:nth-child(1) { animation: slideIn 0.22s 0.08s both ease-out; }
+    .dropdown.open a:nth-child(2) { animation: slideIn 0.22s 0.17s both ease-out; }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    /* ── Modal ── */
+    .modal-bg {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.60);
+      z-index: 300; display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.20s ease;
+    }
+    .modal-bg.open { opacity: 1; pointer-events: all; }
+    .modal {
+      position: relative; width: min(88vw, 580px);
+      border-radius: 24px; overflow: visible;
+      opacity: 0; transform: scale(0.80) translateY(28px);
+      transition: transform 0.30s cubic-bezier(0.34,1.45,0.64,1), opacity 0.22s ease;
+      filter: drop-shadow(0 14px 36px rgba(0,0,0,0.75));
+    }
+    .modal-bg.open .modal { opacity: 1; transform: scale(1) translateY(0); }
+    .modal-header {
+      background: linear-gradient(180deg, #3d4f72 0%, #252f4a 100%);
+      border-radius: 24px 24px 0 0; height: 66px;
+      border: 3.5px solid #161e30; border-bottom: none;
+      position: relative; overflow: hidden;
+    }
+    .modal-header::after {
+      content: ''; position: absolute;
+      top: 5px; left: 14px; right: 14px; height: 20px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 100%);
+      border-radius: 10px;
+    }
+    .modal-body {
+      background: linear-gradient(180deg, #eeead9 0%, #e5e0ce 75%, #d8d2c0 100%);
+      border: 3.5px solid #161e30; border-top: none;
+      border-radius: 0 0 22px 22px; min-height: 210px;
+      padding: 38px 44px 50px; position: relative; overflow: hidden;
+    }
+    .modal-body::after {
+      content: ''; position: absolute;
+      bottom: 0; left: 0; right: 0; height: 70px;
+      background: rgba(0,0,0,0.065);
+      border-radius: 0 0 19px 19px; pointer-events: none;
+    }
+    .modal-body p {
+      font-family: 'MiFuente', 'Arial Rounded MT Bold', Arial, sans-serif;
+      font-size: 19px; font-weight: 700; color: #5c5240;
+      line-height: 1.75; text-align: center; position: relative; z-index: 1;
+    }
+    .modal-close {
+      position: absolute; top: -18px; right: -18px;
+      width: 46px; height: 46px; border-radius: 50%; border: none; cursor: pointer;
+      background: radial-gradient(circle at 38% 28%, #72cef5 0%, #2a9ad8 50%, #186daa 100%);
+      box-shadow: 0 6px 0 #0e4a78, 0 8px 18px rgba(0,0,0,0.55);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.11s, box-shadow 0.11s; z-index: 10;
+    }
+    .modal-close:hover { transform: scale(1.09); }
+    .modal-close:active { transform: translateY(4px); box-shadow: 0 2px 0 #0e4a78; }
+    .modal-close::before {
+      content: ''; position: absolute;
+      top: 6px; left: 9px; width: 13px; height: 7px;
+      background: rgba(255,255,255,0.42); border-radius: 50%;
+      transform: rotate(-20deg);
+    }
+
+    /* ══════════════════════════════
+       Profile Card
+    ══════════════════════════════ */
+    .profile-card {
+      position: fixed; top: 24px; left: 18px;
+      display: flex; align-items: center;
+      background: linear-gradient(180deg, #3e5270 0%, #2a3a56 100%);
+      border: 2px solid #161e30;
+      border-radius: 22px;
+      box-shadow: 0 4px 0 #111a28, 0 6px 16px rgba(0,0,0,0.55);
+      padding: 4px 8px 4px 4px;
+      gap: 6px; z-index: 90;
+      height: 72px;
+    }
+
+    /* Foto de perfil */
+    .profile-avatar {
+      width: 54px; height: 54px; border-radius: 10px;
+      border: 2px solid #1a2840;
+      background: #d8d4c8;
+      object-fit: cover; flex-shrink: 0;
+    }
+    /* Si no hay imagen real, placeholder visual */
+    .profile-avatar-placeholder {
+      width: 54px; height: 54px; border-radius: 10px;
+      border: 2px solid #1a2840;
+      background: linear-gradient(135deg, #c8c4b8 0%, #e0dcd0 100%);
+      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    }
+
+    /* Sección izquierda */
+    .profile-left {
+      display: flex; flex-direction: column; gap: 3px; min-width: 90px;
+    }
+    .profile-name-row { display: flex; align-items: center; gap: 4px; }
+
+    /* Corona */
+    .crown-wrap {
+      position: relative; display: flex; align-items: center;
+      justify-content: center; flex-shrink: 0; width: 30px; height: 30px;
+    }
+    .crown-emoji {
+      font-size: 22px; line-height: 1;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+    }
+    .crown-level {
+      position: absolute; bottom: 0px; left: 50%; transform: translateX(-50%);
+      font-family: 'MiFuente', 'Arial Rounded MT Bold', Arial, sans-serif;
+      font-size: 10px; font-weight: 900; color: #fff;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.9); line-height: 1; z-index: 1;
+    }
+
+    .profile-name {
+      font-family: 'MiFuente', 'Arial Rounded MT Bold', Arial, sans-serif;
+      font-size: 12px; font-weight: 900; color: #ffffff;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+      white-space: nowrap; letter-spacing: 0.01em;
+    }
+
+    /* Barra de progreso */
+    .progress-track {
+      width: 100%; height: 7px;
+      background: #151f30; border-radius: 5px;
+      border: 1.5px solid #0d1520; overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    /* ─────────────────────────────────────────
+       BARRA DE PROGRESO — fácil de editar:
+
+       Cambia el % de "width" aquí abajo para
+       controlar qué tan llena está la barra:
+
+         0%  → completamente vacía
+        25%  → un cuarto
+        50%  → la mitad exacta
+        75%  → actual (más de la mitad → nivel 61)
+       100%  → barra llena (listo para subir)
+    ───────────────────────────────────────── */
+    .progress-fill {
+      width: 75%;
+      height: 100%; border-radius: 5px;
+      background: linear-gradient(90deg, #b82c08 0%, #e0501a 45%, #ff7828 100%);
+      box-shadow: 0 0 6px rgba(220,70,15,0.55);
+      position: relative;
+    }
+    .progress-fill::after {
+      content: ''; position: absolute;
+      top: 1.5px; left: 5px; right: 5px; height: 3px;
+      background: rgba(255,255,255,0.3); border-radius: 3px;
+    }
+
+    /* Divisor */
+    .profile-divider {
+      width: 1.5px; height: 38px; flex-shrink: 0;
+      background: linear-gradient(180deg,
+        rgba(255,255,255,0.03),
+        rgba(255,255,255,0.14),
+        rgba(255,255,255,0.03));
+      border-radius: 2px;
+    }
+
+    /* Sección derecha */
+    .profile-right {
+      display: flex; flex-direction: column;
+      justify-content: center; gap: 3px; flex: 1;
+    }
+    .profile-title-row { display: flex; align-items: center; gap: 4px; }
+    .profile-title {
+      font-family: 'MiFuente', 'Arial Rounded MT Bold', Arial, sans-serif;
+      font-size: 12px; font-weight: 700; color: #ccb090;
+      white-space: nowrap;
+    }
+    .profile-subtitle {
+      font-family: 'MiFuente', 'Arial Rounded MT Bold', Arial, sans-serif;
+      font-size: 13px; font-weight: 900; color: #8b80ff;
+      text-shadow: 0 1px 4px rgba(100,80,210,0.4);
+      white-space: nowrap; padding-left: 2px;
+      cursor: pointer; user-select: none;
+      transition: color 0.2s, transform 0.15s;
+      display: inline-block;
+    }
+    .profile-subtitle:hover { color: #b0aaff; }
+    .profile-subtitle.copied {
+      color: #50e090;
+      transform: scale(1.12);
+    }
+
+    /* Botón flecha */
+    .profile-arrow {
+      width: 26px; height: 26px; border-radius: 50%; border: none; cursor: pointer;
+      background: radial-gradient(circle at 40% 30%, #5a7ab8, #2a4878 60%, #1a2e50);
+      box-shadow: 0 3px 0 #0e1e38, 0 4px 10px rgba(0,0,0,0.4);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: transform 0.11s, box-shadow 0.11s;
+      position: relative;
+    }
+    .profile-arrow:hover { transform: scale(1.08); }
+    .profile-arrow:active { transform: translateY(3px); box-shadow: 0 1px 0 #0e1e38; }
+    .profile-arrow::before {
+      content: ''; position: absolute;
+      top: 5px; left: 7px; width: 11px; height: 6px;
+      background: rgba(255,255,255,0.25); border-radius: 50%;
+      transform: rotate(-15deg);
+    }
+
+    /* ══════════════════════════════════
+       Ventana de bienvenida (inicio)
+    ══════════════════════════════════ */
+    /* Contenedor centrado de la ventana permanente */
+    .welcome-bg {
+      position: fixed; inset: 0;
+      z-index: 50;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none;
+    }
+
+    .welcome-modal {
+      position: relative;
+      width: min(92vw, 720px);
+      height: min(82vh, 620px);
+      border-radius: 26px; overflow: hidden;
+      filter: drop-shadow(0 16px 40px rgba(0,0,0,0.55));
+      display: flex; flex-direction: column;
+      pointer-events: all;
+    }
+
+    .welcome-header {
+      background: linear-gradient(180deg, #3d4f72 0%, #252f4a 100%);
+      border-radius: 24px 24px 0 0;
+      min-height: 80px;
+      border: 3.5px solid #161e30; border-bottom: none;
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 60px;
+    }
+    .welcome-header::after {
+      content: ''; position: absolute;
+      top: 6px; left: 16px; right: 16px; height: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 100%);
+      border-radius: 12px;
+    }
+    .welcome-title {
+      font-family: 'MiFuente', 'Arial Rounded MT Bold', Arial, sans-serif;
+      font-size: 28px; font-weight: 900; color: #ffffff;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+      letter-spacing: 0.04em; z-index: 1;
+    }
+
+    .welcome-body {
+      background: linear-gradient(180deg, #eeead9 0%, #e5e0ce 100%);
+      border: 3.5px solid #161e30; border-top: none;
+      border-radius: 0 0 22px 22px;
+      flex: 1; overflow-y: auto;
+      display: flex; flex-direction: column;
+    }
+
+    .welcome-desc {
+      padding: 36px 44px 28px; flex: 1;
+    }
+    .welcome-desc p {
+      font-family: 'MiFuente', 'Arial Rounded MT Bold', Arial, sans-serif;
+      font-size: 17px; font-weight: 600;
+      color: #5c5240; line-height: 1.8; text-align: center;
+    }
+
+    .welcome-socials {
+      background: rgba(0,0,0,0.07);
+      border-top: 2px solid rgba(0,0,0,0.08);
+      padding: 22px 32px 28px;
+      display: flex; align-items: center; justify-content: center;
+      gap: 18px; flex-wrap: wrap;
+    }
+    .social-btn {
+      width: 50px; height: 50px; border-radius: 14px;
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.13s, box-shadow 0.13s;
+      text-decoration: none;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.25), 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .social-btn:hover  { transform: translateY(-3px) scale(1.08); }
+    .social-btn:active { transform: translateY(2px); }
+    .social-btn svg { width: 26px; height: 26px; }
+    .sb-facebook  { background: #1877f2; }
+    .sb-instagram { background: linear-gradient(135deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888); }
+    .sb-twitter   { background: #000000; }
+    .sb-youtube   { background: #ff0000; }
+    .sb-tiktok    { background: #010101; }
+    .sb-twitch    { background: #9146ff; }
+    .sb-discord   { background: #5865f2; }
+    .sb-telegram  { background: #26a5e4; }
+    .sb-roblox    { background: #e52222; }
+
+    /* ══ Easter egg: personaje sorpresa ══ */
+    .easter-wrap {
+      position: fixed;
+      bottom: 0;
+      right: 40px;
+      width: 320px;
+      height: 508px; /* 65% de 782px */
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 500;
+      transform: translateY(100%);
+      transition: transform 3.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    @media (max-width: 600px) {
+      .easter-wrap {
+        right: 50%;
+        transform: translateX(50%) translateY(100%);
+        width: 260px;
+      }
+      .easter-wrap.visible {
+        transform: translateX(50%) translateY(0%) !important;
+      }
+    }
+    .easter-wrap.visible {
+      transform: translateY(0%);
+    }
+    .easter-char {
+      width: 100%;
+      height: auto;
+      display: block;
+      position: absolute;
+      bottom: 0;
+    }
+
+    /* Burbuja de diálogo */
+    .easter-bubble {
+      position: fixed;
+      bottom: 520px;
+      right: 60px;
+      background: #ffffff;
+      border: 3px solid #1a1a1a;
+      border-radius: 22px;
+      padding: 16px 30px;
+      white-space: nowrap;
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.15);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 501;
+      transition: opacity 0.6s ease;
+    }
+    @media (max-width: 600px) {
+      .easter-bubble {
+        right: 50%;
+        transform: translateX(50%);
+        bottom: 430px;
+      }
+    }
+    .easter-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0; height: 0;
+      border-left: 13px solid transparent;
+      border-right: 13px solid transparent;
+      border-top: 16px solid #1a1a1a;
+    }
+    .easter-bubble::before {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0; height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 13px solid #ffffff;
+      z-index: 1;
+    }
+    .easter-bubble span {
+      font-family: 'MiFuente', 'Arial Rounded MT Bold', Arial, sans-serif;
+      font-size: 22px; font-weight: 900;
+      color: #1a1a1a;
+    }
+    .easter-bubble.visible {
+      opacity: 1;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ══ Profile Card ══ -->
+  <div class="profile-card">
+
+    <!-- FOTO DE PERFIL:
+         Cambia el src="TU_FOTO.jpg" por la ruta de tu imagen.
+         Si no tienes una aún, se muestra el recuadro vacío. -->
+    <img class="profile-avatar" src="src/perfil.png" alt="Foto de perfil">
+
+    <!-- Izquierda: corona + nombre + barra -->
+    <div class="profile-left">
+      <div class="profile-name-row">
+        <!-- Corona emoji -->
+        <div class="crown-wrap">
+          <span class="crown-emoji">👑</span>
+          <span class="crown-level">60</span>
+        </div>
+        <span class="profile-name">House Cookie</span>
+      </div>
+      <!-- Barra de progreso -->
+      <div class="progress-track">
+        <div class="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- Divisor -->
+    <div class="profile-divider"></div>
+
+    <!-- Derecha: título + subtítulo -->
+    <div class="profile-right">
+      <div class="profile-title-row">
+        <!-- Corazón -->
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M7 12.5C7 12.5 1 8.5 1 4.5C1 2.5 2.5 1 4.5 1C5.8 1 7 2 7 2C7 2 8.2 1 9.5 1C11.5 1 13 2.5 13 4.5C13 8.5 7 12.5 7 12.5Z" fill="#ccb090"/>
+        </svg>
+        <span class="profile-title">El más dulce</span>
+      </div>
+      <span class="profile-subtitle" id="copyText" title="Toca para copiar">Texto123</span>
+    </div>
+
+    <!-- Flecha -->
+    <button class="profile-arrow" aria-label="Ver perfil">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M6 3L11 8L6 13" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- ── Botón menú ── -->
+  <svg class="menu-btn" id="menuBtn" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="g-side" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#3a5a7a"/>
+        <stop offset="100%" stop-color="#23394f"/>
+      </linearGradient>
+      <linearGradient id="g-face" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#8db3d4"/>
+        <stop offset="55%" stop-color="#6a90b2"/>
+        <stop offset="100%" stop-color="#4e7090"/>
+      </linearGradient>
+      <linearGradient id="g-shine" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.60"/>
+        <stop offset="100%" stop-color="#ffffff" stop-opacity="0.00"/>
+      </linearGradient>
+    </defs>
+    <rect x="6" y="14" width="88" height="82" rx="21" fill="url(#g-side)"/>
+    <rect x="6" y="6"  width="88" height="82" rx="21" fill="url(#g-face)"/>
+    <rect x="6" y="6"  width="88" height="82" rx="21" fill="none" stroke="#2c4560" stroke-width="3"/>
+    <rect x="10" y="10" width="80" height="74" rx="17" fill="none" stroke="#a8c8e4" stroke-width="1.5" opacity="0.5"/>
+    <rect x="13" y="11" width="74" height="34" rx="13" fill="url(#g-shine)"/>
+    <rect x="21" y="28" width="58" height="10" rx="5" fill="#dceaf6"/>
+    <rect x="21" y="28" width="58" height="10" rx="5" fill="none" stroke="#8aafc9" stroke-width="0.8"/>
+    <rect x="21" y="45" width="58" height="10" rx="5" fill="#dceaf6"/>
+    <rect x="21" y="45" width="58" height="10" rx="5" fill="none" stroke="#8aafc9" stroke-width="0.8"/>
+    <rect x="21" y="62" width="58" height="10" rx="5" fill="#dceaf6"/>
+    <rect x="21" y="62" width="58" height="10" rx="5" fill="none" stroke="#8aafc9" stroke-width="0.8"/>
+  </svg>
+
+
+  <!-- ══ Ventana permanente ══ -->
+  <div class="welcome-bg" id="welcomeBg">
+    <div class="welcome-modal">
+      <div class="welcome-header">
+        <span class="welcome-title">House Cookie</span>
+      </div>
+      <div class="welcome-body">
+        <div class="welcome-desc">
+          <p>Edita la descripción aquí</p>
+        </div>
+        <div class="welcome-socials">
+          <!-- Facebook -->
+          <a href="#" class="social-btn sb-facebook" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+          </a>
+          <!-- YouTube -->
+          <a href="#" class="social-btn sb-youtube" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" fill="white"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#ff0000"/></svg>
+          </a>
+          <!-- Twitter / X -->
+          <a href="#" class="social-btn sb-twitter" aria-label="Twitter / X">
+            <svg viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <!-- Instagram -->
+          <a href="#" class="social-btn sb-instagram" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <!-- TikTok -->
+          <a href="#" class="social-btn sb-tiktok" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.97a8.27 8.27 0 004.84 1.55V7.07a4.85 4.85 0 01-1.07-.38z"/></svg>
+          </a>
+          <!-- Twitch -->
+          <a href="#" class="social-btn sb-twitch" aria-label="Twitch">
+            <svg viewBox="0 0 24 24" fill="white"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg>
+          </a>
+          <!-- Discord -->
+          <a href="#" class="social-btn sb-discord" aria-label="Discord">
+            <svg viewBox="0 0 24 24" fill="white"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z"/></svg>
+          </a>
+          <!-- Telegram -->
+          <a href="#" class="social-btn sb-telegram" aria-label="Telegram">
+            <svg viewBox="0 0 24 24" fill="white"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.17 13.67l-2.938-.916c-.638-.203-.651-.638.136-.943l11.57-4.461c.537-.194 1.006.131.956.871z"/></svg>
+          </a>
+          <!-- Roblox -->
+          <a href="#" class="social-btn sb-roblox" aria-label="Roblox">
+            <svg viewBox="0 0 24 24" fill="white"><path d="M4.547 0L0 19.453 19.453 24 24 4.547zm10.638 13.88l-5.76-1.44 1.44-5.76 5.76 1.44z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay"></div>
+
+  <nav class="dropdown" id="dropdown">
+    <a href="#" id="linkInicio">Inicio</a>
+    <a href="#" id="linkAcerca">Acerca de</a>
+  </nav>
+
+  <div class="modal-bg" id="modalBg">
+    <div class="modal">
+      <div class="modal-header"></div>
+      <div class="modal-body">
+        <p>Edita este texto</p>
+      </div>
+      <button class="modal-close" id="modalClose" aria-label="Cerrar">
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+          <line x1="7" y1="7" x2="21" y2="21" stroke="white" stroke-width="4" stroke-linecap="round"/>
+          <line x1="21" y1="7" x2="7"  y2="21" stroke="white" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ Easter egg: personaje sorpresa ══ -->
+  <div class="easter-wrap" id="easterWrap">
+    <img class="easter-char" src="src/yo.png" alt="Sorpresa" draggable="false">
+  </div>
+  <div class="easter-bubble" id="easterBubble"><span>¡Sorpresa!</span></div>
+
+  <script>
+    // ── Easter egg: 20 clics en el avatar ──
+    const avatar      = document.querySelector('.profile-avatar');
+    const easterWrap  = document.getElementById('easterWrap');
+    const easterBubble= document.getElementById('easterBubble');
+    let clickCount    = 0;
+    let clickTimer    = null;
+    let hideTimer     = null;
+
+    avatar.addEventListener('click', () => {
+      clickCount++;
+      clearTimeout(clickTimer);
+      clickTimer = setTimeout(() => { clickCount = 0; }, 3000);
+
+      if (clickCount >= 20) {
+        clickCount = 0;
+        clearTimeout(clickTimer);
+        clearTimeout(hideTimer);
+
+        // Mostrar personaje
+        easterWrap.classList.add('visible');
+        // Esperar a que termine la animación (3.5s) y luego posicionar y mostrar burbuja
+        setTimeout(() => {
+          const rect     = easterWrap.getBoundingClientRect();
+          const bubbleH  = easterBubble.offsetHeight || 60;
+          // La parte visible del personaje empieza en rect.top (borde superior del wrapper)
+          // Pegamos la burbuja justo encima: bottom = ventana - rect.top + pequeño margen
+          easterBubble.style.left      = (rect.left + rect.width / 2) + 'px';
+          easterBubble.style.bottom    = (window.innerHeight - rect.top + 8) + 'px';
+          easterBubble.style.transform = 'translateX(-50%)';
+          easterBubble.style.right     = 'auto';
+          easterBubble.style.top       = 'auto';
+          easterBubble.classList.add('visible');
+        }, 3500);
+
+        // Esconder todo después de 8 segundos
+        hideTimer = setTimeout(() => {
+          easterWrap.classList.remove('visible');
+          easterBubble.classList.remove('visible');
+        }, 8000);
+      }
+    });
+    const copyText = document.getElementById('copyText');
+    copyText.addEventListener('click', () => {
+      const texto = copyText.textContent;
+      navigator.clipboard.writeText(texto).then(() => {
+        copyText.classList.add('copied');
+        const original = copyText.textContent;
+        copyText.textContent = '¡Copiado!';
+        setTimeout(() => {
+          copyText.textContent = original;
+          copyText.classList.remove('copied');
+        }, 1500);
+      });
+    });
+    function actualizarFondo() {
+      // Hora actual en zona CDMX (America/Mexico_City)
+      const ahoraCDMX = new Date().toLocaleString('en-US', { timeZone: 'America/Mexico_City' });
+      const hora = new Date(ahoraCDMX).getHours();
+
+      // Noche: 19:00 (7 PM) a 06:59
+      const esNoche = hora >= 19 || hora < 7;
+      const bg = esNoche ? 'src/bgnight.png' : 'src/bg.png';
+      document.body.style.backgroundImage = `url('${bg}')`;
+    }
+
+    actualizarFondo();
+    // Revisar cada minuto por si cambia la hora mientras el usuario está en la página
+    setInterval(actualizarFondo, 60000);
+    const btn        = document.getElementById('menuBtn');
+    const dropdown   = document.getElementById('dropdown');
+    const overlay    = document.getElementById('overlay');
+    const modalBg    = document.getElementById('modalBg');
+    const modalClose = document.getElementById('modalClose');
+    const linkAcerca = document.getElementById('linkAcerca');
+    let isOpen = false;
+
+    function toggleMenu(state) {
+      isOpen = state;
+      btn.classList.toggle('pressed', isOpen);
+      dropdown.classList.toggle('open', isOpen);
+      overlay.classList.toggle('open', isOpen);
+    }
+    function openModal()  { modalBg.classList.add('open'); }
+    function closeModal() { modalBg.classList.remove('open'); }
+
+    btn.addEventListener('click', () => toggleMenu(!isOpen));
+    overlay.addEventListener('click', () => toggleMenu(false));
+    linkAcerca.addEventListener('click', (e) => {
+      e.preventDefault(); toggleMenu(false); setTimeout(openModal, 180);
+    });
+    modalClose.addEventListener('click', closeModal);
+    modalBg.addEventListener('click', (e) => { if (e.target === modalBg) closeModal(); });
+  </script>
+</body>
+</html>
