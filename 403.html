@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>403 — Prohibido</title>
+  <style>
+    @font-face {
+      font-family: 'MiFuente';
+      src: url('src/mifuente.ttf') format('truetype');
+      font-weight: normal; font-style: normal;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%; height: 100%;
+      font-family: 'MiFuente', 'Arial Rounded MT Bold', Arial, sans-serif;
+      background-color: #00b140;
+      background-image: url('src/bg.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.52);
+      z-index: 1;
+    }
+    .modal-wrap {
+      position: relative; z-index: 2;
+      width: min(88vw, 560px);
+      border-radius: 24px; overflow: visible;
+      filter: drop-shadow(0 14px 36px rgba(0,0,0,0.75));
+      animation: popIn 0.35s cubic-bezier(0.34,1.45,0.64,1) both;
+    }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.78) translateY(30px); }
+      to   { opacity: 1; transform: scale(1)    translateY(0); }
+    }
+    .modal-wrap.closing {
+      animation: popOut 0.30s cubic-bezier(0.55,0,1,0.45) both;
+    }
+    @keyframes popOut {
+      from { opacity: 1; transform: scale(1)    translateY(0); }
+      to   { opacity: 0; transform: scale(0.78) translateY(30px); }
+    }
+    .modal-header {
+      background: linear-gradient(180deg, #3d4f72 0%, #252f4a 100%);
+      border-radius: 24px 24px 0 0;
+      height: 66px;
+      border: 3.5px solid #161e30; border-bottom: none;
+      position: relative; overflow: hidden;
+    }
+    .modal-header::after {
+      content: ''; position: absolute;
+      top: 5px; left: 14px; right: 14px; height: 20px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 100%);
+      border-radius: 10px;
+    }
+    .modal-body {
+      background: linear-gradient(180deg, #eeead9 0%, #e5e0ce 75%, #d8d2c0 100%);
+      border: 3.5px solid #161e30; border-top: none;
+      border-radius: 0 0 22px 22px;
+      padding: 44px 48px 56px;
+      position: relative; overflow: hidden; text-align: center;
+    }
+    .modal-body::after {
+      content: ''; position: absolute;
+      bottom: 0; left: 0; right: 0; height: 70px;
+      background: rgba(0,0,0,0.065);
+      border-radius: 0 0 19px 19px; pointer-events: none;
+    }
+    .error-text {
+      font-size: 26px; font-weight: 900;
+      color: #5c5240;
+      white-space: nowrap;
+      position: relative; z-index: 1;
+    }
+    .modal-close {
+      position: absolute; top: -22px; right: -22px;
+      width: 52px; height: 52px;
+      border-radius: 50%; border: none; cursor: pointer;
+      background: radial-gradient(circle at 38% 28%, #72cef5 0%, #2a9ad8 50%, #186daa 100%);
+      box-shadow: 0 6px 0 #0e4a78, 0 8px 18px rgba(0,0,0,0.55);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.11s, box-shadow 0.11s; z-index: 10;
+    }
+    .modal-close:hover  { transform: scale(1.09); }
+    .modal-close:active { transform: translateY(4px); box-shadow: 0 2px 0 #0e4a78; }
+    .modal-close::before {
+      content: ''; position: absolute;
+      top: 7px; left: 11px; width: 16px; height: 9px;
+      background: rgba(255,255,255,0.42); border-radius: 50%;
+      transform: rotate(-20deg);
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+
+  <div class="modal-wrap" id="modalWrap">
+    <div class="modal-header"></div>
+    <div class="modal-body">
+      <div class="error-text">403 FORBIDDEN</div>
+    </div>
+    <button class="modal-close" id="closeBtn" aria-label="Cerrar y volver al inicio">
+      <svg viewBox="0 0 28 28" fill="none" width="22" height="22">
+        <line x1="7" y1="7" x2="21" y2="21" stroke="white" stroke-width="4" stroke-linecap="round"/>
+        <line x1="21" y1="7" x2="7"  y2="21" stroke="white" stroke-width="4" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <script>
+    const modal    = document.getElementById('modalWrap');
+    const closeBtn = document.getElementById('closeBtn');
+
+    closeBtn.addEventListener('click', () => {
+      // Animación de cierre
+      modal.classList.add('closing');
+
+      // Al terminar la animación → redirigir
+      modal.addEventListener('animationend', () => {
+        window.location.href = 'index.html';
+      }, { once: true });
+
+      // Si por alguna razón la animación no dispara → forzar en 3s
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 3000);
+    });
+  </script>
+</body>
+</html>
