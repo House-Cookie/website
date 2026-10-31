@@ -1,8 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!-- Google Tag (Google Tag Manager) -->
+  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-TQGGXMSV"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  </script>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>House Cookie</title>
 
   <!-- Favicon -->
@@ -49,21 +57,32 @@
       min-height: 100%;
     }
 
-    body {
-      min-height: 100vh;
+    /* Fondo de la página: capa fija que cubre TODA la pantalla,
+       incluso debajo de la barra de estado y la barra inferior de iOS */
+    .bg-layer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: -1;
       background-color: #017C00; /* Color de respaldo si no hay bg.png / bg.jpg */
       background-position: center;
       background-size: cover;
       background-repeat: no-repeat;
-      background-attachment: fixed;
+      pointer-events: none;
+    }
+
+    body {
+      min-height: 100vh;
       font-family: "HouseFont", "Trebuchet MS", "Segoe UI", Verdana, sans-serif;
     }
 
     /* ===== Botón de menú (arriba a la derecha) ===== */
     .menu-btn {
       position: fixed;
-      top: 16px;
-      right: 16px;
+      top: calc(16px + env(safe-area-inset-top, 0px));
+      right: calc(16px + env(safe-area-inset-right, 0px));
       width: 56px;
       height: 56px;
       padding: 0;
@@ -180,8 +199,8 @@
     /* ===== Tarjeta de perfil (arriba a la izquierda) ===== */
     .profile-card {
       position: fixed;
-      top: 16px;
-      left: 16px;
+      top: calc(16px + env(safe-area-inset-top, 0px));
+      left: calc(16px + env(safe-area-inset-left, 0px));
       display: flex;
       align-items: center;
       z-index: 40;
@@ -533,6 +552,7 @@
       position: fixed;
       right: 22px;
       bottom: 0;
+      padding-bottom: env(safe-area-inset-bottom, 0px);
       z-index: 150;
       display: flex;
       flex-direction: column;
@@ -793,6 +813,9 @@
   </style>
 </head>
 <body>
+  <!-- Fondo de la página -->
+  <div class="bg-layer" id="bgLayer" aria-hidden="true"></div>
+
   <!-- Tarjeta de perfil -->
   <div class="profile-card" id="profileCard">
     <div class="profile-main">
@@ -1196,6 +1219,7 @@
       return (t >= NIGHT_START || t < DAY_START) ? 'night' : 'day';
     }
 
+    const bgLayer = document.getElementById('bgLayer');
     let appliedPeriod = null;
     let bgToken = 0;
 
@@ -1207,13 +1231,13 @@
       (function tryLoad(i) {
         if (token !== bgToken) return; // llegó un cambio más nuevo
         if (i >= sources.length) {
-          document.body.style.backgroundImage = 'none'; // se queda #017C00
+          bgLayer.style.backgroundImage = 'none'; // se queda #017C00
           return;
         }
         const img = new Image();
         img.onload = () => {
           if (token === bgToken) {
-            document.body.style.backgroundImage = 'url("' + sources[i] + '")';
+            bgLayer.style.backgroundImage = 'url("' + sources[i] + '")';
           }
         };
         img.onerror = () => tryLoad(i + 1);

@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>404 Not Found | House Cookie</title>
 
   <!-- Favicon -->
@@ -29,13 +29,24 @@
       min-height: 100%;
     }
 
-    body {
-      min-height: 100vh;
+    /* Fondo de la página: capa fija que cubre TODA la pantalla,
+       incluso debajo de la barra de estado y la barra inferior de iOS */
+    .bg-layer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: -1;
       background-color: #017C00; /* Respaldo si no hay bg.png / bg.jpg */
       background-position: center;
       background-size: cover;
       background-repeat: no-repeat;
-      background-attachment: fixed;
+      pointer-events: none;
+    }
+
+    body {
+      min-height: 100vh;
       font-family: "HouseFont", "Trebuchet MS", "Segoe UI", Verdana, sans-serif;
     }
 
@@ -165,6 +176,9 @@
   </style>
 </head>
 <body>
+  <!-- Fondo de la página -->
+  <div class="bg-layer" id="bgLayer" aria-hidden="true"></div>
+
   <main class="stage">
     <section class="dialog" role="alert">
       <div class="dialog-header"></div>
@@ -186,7 +200,7 @@
       if (i >= bgSources.length) return;
       const img = new Image();
       img.onload = () => {
-        document.body.style.backgroundImage = 'url("' + bgSources[i] + '")';
+        document.getElementById('bgLayer').style.backgroundImage = 'url("' + bgSources[i] + '")';
       };
       img.onerror = () => loadBackground(i + 1);
       img.src = bgSources[i];
