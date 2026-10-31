@@ -1,761 +1,1247 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-TQGGXMSV');</script>
-  <!-- End Google Tag Manager -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-  <!-- ══ SEO básico ══ -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>House Cookie</title>
-  <meta name="description" content="Hola soy House Cookie, un Cookie Conejito de Cookie Run🐰">
-  <meta name="keywords" content="house cookie, cookie, cookie run, crk, bunny, games">
-  <meta name="author" content="House Cookie">
-  <meta name="robots" content="index, follow">
 
-  <!-- ══ Open Graph (Facebook, Discord, WhatsApp, etc.) ══ -->
-  <meta property="og:type"        content="website">
-  <meta property="og:url"         content="https://housethecookie.com/">
-  <meta property="og:title"       content="House Cookie">
-  <meta property="og:description" content="¡House Cookie!">
-  <meta property="og:image"       content="https://housethecookie.com/src/perfil.png">
-  <meta property="og:image:width"  content="512">
-  <meta property="og:image:height" content="512">
-  <meta property="og:locale"      content="es_MX">
-
-  <!-- ══ Twitter / X Card ══ -->
-  <meta name="twitter:card"        content="summary_large_image">
-  <meta name="twitter:url"         content="https://housethecookie.com/">
-  <meta name="twitter:title"       content="House Cookie">
-  <meta name="twitter:description" content="¡House Cookie!">
-  <meta name="twitter:image"       content="https://housethecookie.com/src/perfil.png">
-
-  <!-- ══ Favicon ══ -->
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="shortcut icon" href="favicon.ico">
+
+  <!-- SEO -->
+  <meta name="description" content="¡Hola soy House Cookie! Soy un tierno conejito de Cookie Run. Conoce mi perfil y mis redes sociales.">
+  <meta name="author" content="House Cookie">
+  <meta name="theme-color" content="#1acfea">
+
+  <!-- Open Graph (al compartir el link) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="House Cookie">
+  <meta property="og:locale" content="es_MX">
+  <meta property="og:title" content="House Cookie">
+  <meta property="og:description" content="¡Hola soy House Cookie! Soy un tierno conejito de Cookie Run. Conoce mi perfil y mis redes sociales.">
+  <!-- Cuando subas la página, cambia esto por la URL completa, ej: https://tusitio.com/og-image.png -->
+  <meta property="og:image" content="og-image.png">
+  <meta property="og:image:alt" content="House Cookie">
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="House Cookie">
+  <meta name="twitter:description" content="¡Hola soy House Cookie! Soy un tierno conejito de Cookie Run. Conoce mi perfil y mis redes sociales.">
+  <meta name="twitter:image" content="og-image.png">
   <style>
+    /* Fuente personalizada (font.ttf junto al index.html) */
     @font-face {
-      font-family: 'MiFuente';
-      src: url('src/mifuente.ttf') format('truetype');
-      font-weight: normal;
+      font-family: "HouseFont";
+      src: url("font.ttf") format("truetype");
+      font-weight: 100 900; /* evita que el navegador "engorde" la fuente */
       font-style: normal;
+      font-display: swap;
     }
 
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     html, body {
-      width: 100%; height: 100%;
-      background-color: #00b140;
-      background-image: url('src/bg.png');
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      background-color: #017C00; /* Color de respaldo si no hay bg.png / bg.jpg */
+      background-position: center;
       background-size: cover;
-      background-position: center center;
       background-repeat: no-repeat;
       background-attachment: fixed;
-      font-family: 'MiFuente', 'Arial Rounded MT Bold', Arial, sans-serif;
+      font-family: "HouseFont", "Trebuchet MS", "Segoe UI", Verdana, sans-serif;
     }
 
-    /* ── Botón menú ── */
+    /* ===== Botón de menú (arriba a la derecha) ===== */
     .menu-btn {
-      position: fixed; top: 18px; right: 18px;
-      width: 90px; height: 90px;
-      cursor: pointer; user-select: none; z-index: 100;
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      width: 56px;
+      height: 56px;
+      padding: 0;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+
+      /* Cuerpo azul-grisáceo con degradado */
+      background: linear-gradient(180deg, #6c82a3 0%, #55698a 55%, #4a5d7c 100%);
+      border: 3px solid #9fb2cf;
+      border-radius: 14px;
+
+      /* Borde oscuro exterior + brillo interior + sombra */
+      box-shadow:
+        0 0 0 2px #1d2738,
+        inset 0 3px 0 rgba(255, 255, 255, 0.35),
+        inset 0 -4px 0 rgba(20, 30, 50, 0.35),
+        0 4px 8px rgba(0, 0, 0, 0.45);
+
       transition: transform 0.12s ease, filter 0.12s ease;
-      filter: drop-shadow(0px 6px 0px rgba(0,0,0,0.35)) drop-shadow(0px 2px 8px rgba(0,0,0,0.3));
-    }
-    .menu-btn:hover { transform: translateY(-2px) scale(1.05); }
-    .menu-btn.pressed { transform: translateY(3px) scale(0.97); }
-
-    /* ── Overlay ── */
-    .overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.38);
-      z-index: 98; opacity: 0; pointer-events: none;
-      transition: opacity 0.25s ease;
-    }
-    .overlay.open { opacity: 1; pointer-events: all; }
-
-    /* ── Menú lateral ── */
-    .dropdown {
-      position: fixed; top: 0; right: 0;
-      width: min(72vw, 290px); height: 100vh;
-      z-index: 99;
-      background: linear-gradient(180deg, #2c4260 0%, #1e3048 55%, #18273c 100%);
-      border-left: 3px solid #13202f;
-      box-shadow: -8px 0 32px rgba(0,0,0,0.6);
-      display: flex; flex-direction: column; padding-top: 130px;
-      transform: translateX(110%); opacity: 0; pointer-events: none;
-      transition: transform 0.28s cubic-bezier(0.34,1.20,0.64,1), opacity 0.20s ease;
-    }
-    .dropdown::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 220px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0) 100%);
-      pointer-events: none;
-    }
-    .dropdown.open { transform: translateX(0); opacity: 1; pointer-events: all; }
-    .dropdown a {
-      display: block; padding: 22px 34px; color: #c8dfef;
-      font-family: 'MiFuente', 'Arial Rounded MT Bold', Arial, sans-serif;
-      font-size: 22px; font-weight: 800; letter-spacing: 0.05em;
-      text-decoration: none; text-shadow: 0 2px 6px rgba(0,0,0,0.55);
-      border-bottom: 1.5px solid rgba(255,255,255,0.07);
-      transition: background 0.13s, color 0.13s, padding-left 0.13s;
-    }
-    .dropdown a:hover  { background: rgba(255,255,255,0.10); color: #fff; padding-left: 44px; }
-    .dropdown a:active { background: rgba(0,0,0,0.18); }
-    .dropdown.open a:nth-child(1) { animation: slideIn 0.22s 0.08s both ease-out; }
-    .dropdown.open a:nth-child(2) { animation: slideIn 0.22s 0.17s both ease-out; }
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateX(20px); }
-      to   { opacity: 1; transform: translateX(0); }
+      -webkit-tap-highlight-color: transparent;
     }
 
-    /* ── Modal ── */
-    .modal-bg {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.60);
-      z-index: 300; display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none; transition: opacity 0.20s ease;
-    }
-    .modal-bg.open { opacity: 1; pointer-events: all; }
-    .modal {
-      position: relative; width: min(88vw, 580px);
-      border-radius: 24px; overflow: visible;
-      opacity: 0; transform: scale(0.80) translateY(28px);
-      transition: transform 0.30s cubic-bezier(0.34,1.45,0.64,1), opacity 0.22s ease;
-      filter: drop-shadow(0 14px 36px rgba(0,0,0,0.75));
-    }
-    .modal-bg.open .modal { opacity: 1; transform: scale(1) translateY(0); }
-    .modal-header {
-      background: linear-gradient(180deg, #3d4f72 0%, #252f4a 100%);
-      border-radius: 24px 24px 0 0; height: 66px;
-      border: 3.5px solid #161e30; border-bottom: none;
-      position: relative; overflow: hidden;
-    }
-    .modal-header::after {
-      content: ''; position: absolute;
-      top: 5px; left: 14px; right: 14px; height: 20px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 100%);
-      border-radius: 10px;
-    }
-    .modal-body {
-      background: linear-gradient(180deg, #eeead9 0%, #e5e0ce 75%, #d8d2c0 100%);
-      border: 3.5px solid #161e30; border-top: none;
-      border-radius: 0 0 22px 22px; min-height: 210px;
-      padding: 38px 44px 50px; position: relative; overflow: hidden;
-    }
-    .modal-body::after {
-      content: ''; position: absolute;
-      bottom: 0; left: 0; right: 0; height: 70px;
-      background: rgba(0,0,0,0.065);
-      border-radius: 0 0 19px 19px; pointer-events: none;
-    }
-    .modal-body p {
-      font-family: 'MiFuente', 'Arial Rounded MT Bold', Arial, sans-serif;
-      font-size: 19px; font-weight: 700; color: #5c5240;
-      line-height: 1.75; text-align: center; position: relative; z-index: 1;
-    }
-    .modal-close {
-      position: absolute; top: -18px; right: -18px;
-      width: 46px; height: 46px; border-radius: 50%; border: none; cursor: pointer;
-      background: radial-gradient(circle at 38% 28%, #72cef5 0%, #2a9ad8 50%, #186daa 100%);
-      box-shadow: 0 6px 0 #0e4a78, 0 8px 18px rgba(0,0,0,0.55);
-      display: flex; align-items: center; justify-content: center;
-      transition: transform 0.11s, box-shadow 0.11s; z-index: 10;
-    }
-    .modal-close:hover { transform: scale(1.09); }
-    .modal-close:active { transform: translateY(4px); box-shadow: 0 2px 0 #0e4a78; }
-    .modal-close::before {
-      content: ''; position: absolute;
-      top: 6px; left: 9px; width: 13px; height: 7px;
-      background: rgba(255,255,255,0.42); border-radius: 50%;
-      transform: rotate(-20deg);
+    .menu-btn span {
+      display: block;
+      width: 28px;
+      height: 5px;
+      background: #ffffff;
+      border-radius: 3px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
     }
 
-    /* ══════════════════════════════
-       Profile Card
-    ══════════════════════════════ */
+    .menu-btn:hover {
+      filter: brightness(1.12);
+    }
+
+    .menu-btn:active {
+      transform: scale(0.94);
+    }
+
+    /* ===== Menú desplegable (panel lateral derecho) ===== */
+    .side-menu {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 340px;
+      max-width: 88vw;
+      height: 100vh;
+      background: #2c3748;
+      box-shadow: -6px 0 18px rgba(0, 0, 0, 0.4);
+      transform: translateX(100%);
+      visibility: hidden;
+      transition: transform 0.28s ease, visibility 0.28s;
+      z-index: 50;
+    }
+
+    .side-menu.open {
+      transform: translateX(0);
+      visibility: visible;
+    }
+
+    /* Franja oscura de arriba donde vive el botón */
+    .side-menu-header {
+      height: 88px;
+      background: #1f2733;
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+    }
+
+    .side-menu-list {
+      list-style: none;
+      padding: 18px 26px 0;
+      min-height: 330px;
+      border-bottom: 2px solid #3a475b;
+      margin: 0 22px;
+      padding-left: 4px;
+      padding-right: 4px;
+    }
+
+    .side-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 6px;
+      color: #ffffff;
+      font-family: "HouseFont", "Trebuchet MS", "Segoe UI", Verdana, sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      text-decoration: none;
+      text-shadow: 0 2px 3px rgba(0, 0, 0, 0.55);
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background 0.12s ease;
+    }
+
+    .side-menu-item:hover {
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .side-menu-item svg {
+      width: 34px;
+      height: 34px;
+      flex-shrink: 0;
+      filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5));
+    }
+
+    /* El botón queda por encima del panel */
+    .menu-btn {
+      z-index: 100;
+    }
+
+    /* ===== Tarjeta de perfil (arriba a la izquierda) ===== */
     .profile-card {
-      position: fixed; top: 24px; left: 18px;
-      display: flex; align-items: center;
-      background: linear-gradient(180deg, #3e5270 0%, #2a3a56 100%);
-      border: 2px solid #161e30;
-      border-radius: 22px;
-      box-shadow: 0 4px 0 #111a28, 0 6px 16px rgba(0,0,0,0.55);
-      padding: 4px 8px 4px 4px;
-      gap: 6px; z-index: 90;
-      height: 72px;
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      display: flex;
+      align-items: center;
+      z-index: 40;
+      font-family: "HouseFont", "Trebuchet MS", "Segoe UI", Verdana, sans-serif;
+    }
+
+    /* Parte principal */
+    .profile-main {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 7px 16px 7px 7px;
+      background: linear-gradient(180deg, #4a5d7c 0%, #3d4f6b 100%);
+      border: 3px solid #7f95b5;
+      border-radius: 18px;
+      box-shadow:
+        0 0 0 2px #1d2738,
+        inset 0 3px 0 rgba(255, 255, 255, 0.18),
+        0 4px 8px rgba(0, 0, 0, 0.4);
     }
 
     /* Foto de perfil */
-    .profile-avatar {
-      width: 54px; height: 54px; border-radius: 10px;
-      border: 2px solid #1a2840;
-      background: #d8d4c8;
-      object-fit: cover; flex-shrink: 0;
-    }
-    /* Si no hay imagen real, placeholder visual */
-    .profile-avatar-placeholder {
-      width: 54px; height: 54px; border-radius: 10px;
-      border: 2px solid #1a2840;
-      background: linear-gradient(135deg, #c8c4b8 0%, #e0dcd0 100%);
-      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-    }
-
-    /* Sección izquierda */
-    .profile-left {
-      display: flex; flex-direction: column; gap: 3px; min-width: 90px;
-    }
-    .profile-name-row { display: flex; align-items: center; gap: 4px; }
-
-    /* Corona */
-    .crown-wrap {
-      position: relative; display: flex; align-items: center;
-      justify-content: center; flex-shrink: 0; width: 30px; height: 30px;
-    }
-    .crown-emoji {
-      font-size: 22px; line-height: 1;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-    }
-    .crown-level {
-      position: absolute; bottom: 0px; left: 50%; transform: translateX(-50%);
-      font-family: 'MiFuente', 'Arial Rounded MT Bold', Arial, sans-serif;
-      font-size: 10px; font-weight: 900; color: #fff;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.9); line-height: 1; z-index: 1;
-    }
-
-    .profile-name {
-      font-family: 'MiFuente', 'Arial Rounded MT Bold', Arial, sans-serif;
-      font-size: 12px; font-weight: 900; color: #ffffff;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.6);
-      white-space: nowrap; letter-spacing: 0.01em;
-    }
-
-    /* Barra de progreso */
-    .progress-track {
-      width: 100%; height: 7px;
-      background: #151f30; border-radius: 5px;
-      border: 1.5px solid #0d1520; overflow: hidden;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
-    }
-
-    /* ─────────────────────────────────────────
-       BARRA DE PROGRESO — fácil de editar:
-
-       Cambia el % de "width" aquí abajo para
-       controlar qué tan llena está la barra:
-
-         0%  → completamente vacía
-        25%  → un cuarto
-        50%  → la mitad exacta
-        75%  → actual (más de la mitad → nivel 61)
-       100%  → barra llena (listo para subir)
-    ───────────────────────────────────────── */
-    .progress-fill {
-      width: 20%;
-      height: 100%; border-radius: 5px;
-      background: linear-gradient(90deg, #b82c08 0%, #e0501a 45%, #ff7828 100%);
-      box-shadow: 0 0 6px rgba(220,70,15,0.55);
+    .avatar-wrap {
       position: relative;
-    }
-    .progress-fill::after {
-      content: ''; position: absolute;
-      top: 1.5px; left: 5px; right: 5px; height: 3px;
-      background: rgba(255,255,255,0.3); border-radius: 3px;
+      flex-shrink: 0;
+      width: 72px;
+      height: 72px;
     }
 
-    /* Divisor */
+    .avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+      border: 3px solid #d3dbe8;
+      box-shadow: 0 0 0 3px #1d2738;
+      background: linear-gradient(160deg, #6f86a8, #3f526f);
+      overflow: hidden;
+    }
+
+    .avatar img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Botoncito circular con la flecha (esquina de la foto) */
+    .expand-btn {
+      position: relative;
+      flex-shrink: 0;
+      margin-left: 4px;
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: linear-gradient(180deg, #e3e8ef 0%, #a9b4c4 100%);
+      border: 2px solid #6b7a91;
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 2px #1d2738,
+        inset 0 2px 0 rgba(255, 255, 255, 0.7),
+        0 2px 4px rgba(0, 0, 0, 0.45);
+      z-index: 3;
+      transition: transform 0.12s ease, filter 0.12s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .expand-btn svg {
+      width: 15px;
+      height: 15px;
+      transition: transform 0.25s ease;
+    }
+
+    .expand-btn:hover {
+      filter: brightness(1.1);
+    }
+
+    .expand-btn:active {
+      transform: scale(0.92);
+    }
+
+    .profile-card.open .expand-btn svg {
+      transform: rotate(180deg);
+    }
+
+    /* Textos del perfil */
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-right: 4px;
+    }
+
+    .profile-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 18px;
+      font-weight: 800;
+      color: #e2bd8e;
+      text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+      white-space: nowrap;
+    }
+
+    .profile-title svg {
+      width: 26px;
+      height: 26px;
+      flex-shrink: 0;
+      filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5));
+    }
+
     .profile-divider {
-      width: 1.5px; height: 38px; flex-shrink: 0;
-      background: linear-gradient(180deg,
-        rgba(255,255,255,0.03),
-        rgba(255,255,255,0.14),
-        rgba(255,255,255,0.03));
+      height: 2px;
+      background: rgba(18, 26, 40, 0.55);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12);
       border-radius: 2px;
     }
 
-    /* Sección derecha */
-    .profile-right {
-      display: flex; flex-direction: column;
-      justify-content: center; gap: 3px; flex: 1;
-    }
-    .profile-title-row { display: flex; align-items: center; gap: 4px; }
-    .profile-title {
-      font-family: 'MiFuente', 'Arial Rounded MT Bold', Arial, sans-serif;
-      font-size: 12px; font-weight: 700; color: #ccb090;
+    .profile-name {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      text-shadow: 0 2px 2px rgba(0, 0, 0, 0.55);
       white-space: nowrap;
     }
-    .profile-subtitle {
-      font-family: 'MiFuente', 'Arial Rounded MT Bold', Arial, sans-serif;
-      font-size: 13px; font-weight: 900; color: #8b80ff;
-      text-shadow: 0 1px 4px rgba(100,80,210,0.4);
-      white-space: nowrap; padding-left: 2px;
-      cursor: pointer; user-select: none;
-      transition: color 0.2s, transform 0.15s;
-      display: inline-block;
-    }
-    .profile-subtitle:hover { color: #b0aaff; }
-    .profile-subtitle.copied {
-      color: #50e090;
-      transform: scale(1.12);
-    }
 
-    /* Botón flecha */
-    .profile-arrow {
-      width: 26px; height: 26px; border-radius: 50%; border: none; cursor: pointer;
-      background: radial-gradient(circle at 40% 30%, #5a7ab8, #2a4878 60%, #1a2e50);
-      box-shadow: 0 3px 0 #0e1e38, 0 4px 10px rgba(0,0,0,0.4);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; transition: transform 0.11s, box-shadow 0.11s;
+    /* Pedazo extra que se despliega (ID) */
+    .profile-extra {
       position: relative;
-    }
-    .profile-arrow:hover { transform: scale(1.08); }
-    .profile-arrow:active { transform: translateY(3px); box-shadow: 0 1px 0 #0e1e38; }
-    .profile-arrow::before {
-      content: ''; position: absolute;
-      top: 5px; left: 7px; width: 11px; height: 6px;
-      background: rgba(255,255,255,0.25); border-radius: 50%;
-      transform: rotate(-15deg);
-    }
-
-    /* ══════════════════════════════════
-       Ventana de bienvenida (inicio)
-    ══════════════════════════════════ */
-    /* Contenedor centrado de la ventana permanente */
-    .welcome-bg {
-      position: fixed; inset: 0;
-      z-index: 50;
-      display: flex; align-items: center; justify-content: center;
-      pointer-events: none;
-    }
-
-    .welcome-modal {
-      position: relative;
-      width: min(92vw, 720px);
-      height: min(82vh, 620px);
-      border-radius: 26px; overflow: hidden;
-      filter: drop-shadow(0 16px 40px rgba(0,0,0,0.55));
-      display: flex; flex-direction: column;
-      pointer-events: all;
-    }
-
-    .welcome-header {
-      background: linear-gradient(180deg, #3d4f72 0%, #252f4a 100%);
-      border-radius: 24px 24px 0 0;
-      min-height: 80px;
-      border: 3.5px solid #161e30; border-bottom: none;
-      position: relative; overflow: hidden;
-      display: flex; align-items: center; justify-content: center;
-      padding: 0 60px;
-    }
-    .welcome-header::after {
-      content: ''; position: absolute;
-      top: 6px; left: 16px; right: 16px; height: 22px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 100%);
-      border-radius: 12px;
-    }
-    .welcome-title {
-      font-family: 'MiFuente', 'Arial Rounded MT Bold', Arial, sans-serif;
-      font-size: 28px; font-weight: 900; color: #ffffff;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.6);
-      letter-spacing: 0.04em; z-index: 1;
-    }
-
-    .welcome-body {
-      background: linear-gradient(180deg, #eeead9 0%, #e5e0ce 100%);
-      border: 3.5px solid #161e30; border-top: none;
-      border-radius: 0 0 22px 22px;
-      flex: 1; overflow-y: auto;
-      display: flex; flex-direction: column;
-    }
-
-    .welcome-desc {
-      padding: 36px 44px 28px; flex: 1;
-    }
-    .welcome-desc p {
-      font-family: 'MiFuente', 'Arial Rounded MT Bold', Arial, sans-serif;
-      font-size: 17px; font-weight: 600;
-      color: #5c5240; line-height: 1.8; text-align: center;
-    }
-
-    .welcome-socials {
-      background: rgba(0,0,0,0.07);
-      border-top: 2px solid rgba(0,0,0,0.08);
-      padding: 22px 32px 28px;
-      display: flex; align-items: center; justify-content: center;
-      gap: 18px; flex-wrap: wrap;
-    }
-    .social-btn {
-      width: 50px; height: 50px; border-radius: 14px;
-      border: none; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: transform 0.13s, box-shadow 0.13s;
-      text-decoration: none;
-      box-shadow: 0 4px 0 rgba(0,0,0,0.25), 0 4px 12px rgba(0,0,0,0.2);
-    }
-    .social-btn:hover  { transform: translateY(-3px) scale(1.08); }
-    .social-btn:active { transform: translateY(2px); }
-    .social-btn svg { width: 26px; height: 26px; }
-    .sb-facebook  { background: #1877f2; }
-    .sb-instagram { background: linear-gradient(135deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888); }
-    .sb-twitter   { background: #000000; }
-    .sb-youtube   { background: #ff0000; }
-    .sb-tiktok    { background: #010101; }
-    .sb-twitch    { background: #9146ff; }
-    .sb-discord   { background: #5865f2; }
-    .sb-telegram  { background: #26a5e4; }
-    .sb-roblox    { background: #e52222; }
-
-    /* ══ Easter egg: personaje sorpresa ══ */
-    .easter-wrap {
-      position: fixed;
-      bottom: 0;
-      right: 40px;
-      width: 320px;
-      height: 508px; /* 65% de 782px */
-      overflow: hidden;
-      pointer-events: none;
-      z-index: 500;
-      transform: translateY(100%);
-      transition: transform 3.5s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    @media (max-width: 600px) {
-      .easter-wrap {
-        right: 50%;
-        transform: translateX(50%) translateY(100%);
-        width: 260px;
-      }
-      .easter-wrap.visible {
-        transform: translateX(50%) translateY(0%) !important;
-      }
-    }
-    .easter-wrap.visible {
-      transform: translateY(0%);
-    }
-    .easter-char {
-      width: 100%;
-      height: auto;
-      display: block;
-      position: absolute;
-      bottom: 0;
-    }
-
-    /* Burbuja de diálogo */
-    .easter-bubble {
-      position: fixed;
-      bottom: 520px;
-      right: 60px;
-      background: #ffffff;
-      border: 3px solid #1a1a1a;
-      border-radius: 22px;
-      padding: 16px 30px;
-      white-space: nowrap;
-      box-shadow: 4px 4px 0 rgba(0,0,0,0.15);
-      opacity: 0;
-      pointer-events: none;
-      z-index: 501;
-      transition: opacity 0.6s ease;
-    }
-    @media (max-width: 600px) {
-      .easter-bubble {
-        right: 50%;
-        transform: translateX(50%);
-        bottom: 430px;
-      }
-    }
-    .easter-bubble::after {
-      content: '';
-      position: absolute;
-      bottom: -16px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0; height: 0;
-      border-left: 13px solid transparent;
-      border-right: 13px solid transparent;
-      border-top: 16px solid #1a1a1a;
-    }
-    .easter-bubble::before {
-      content: '';
-      position: absolute;
-      bottom: -12px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0; height: 0;
-      border-left: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-top: 13px solid #ffffff;
       z-index: 1;
+      max-width: 0;
+      margin-left: -14px;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-width 0.3s ease, opacity 0.25s ease;
     }
-    .easter-bubble span {
-      font-family: 'MiFuente', 'Arial Rounded MT Bold', Arial, sans-serif;
-      font-size: 22px; font-weight: 900;
-      color: #1a1a1a;
-    }
-    .easter-bubble.visible {
+
+    .profile-card.open .profile-extra {
+      max-width: 260px;
       opacity: 1;
     }
 
+    .profile-extra-inner {
+      display: flex;
+      align-items: center;
+      height: 44px;
+      padding: 0 22px 0 32px;
+      background: linear-gradient(180deg, #46587a 0%, #384a66 100%);
+      border: 3px solid #7f95b5;
+      border-left: none;
+      border-radius: 0 16px 16px 0;
+      box-shadow: 0 0 0 2px #1d2738, 0 4px 8px rgba(0, 0, 0, 0.35);
+    }
+
+    .profile-id {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #ffffff;
+      text-shadow: 0 2px 2px rgba(0, 0, 0, 0.55);
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+      background: none;
+      border: none;
+      font-family: inherit;
+      padding: 0;
+    }
+
+    .profile-id:active {
+      transform: scale(0.97);
+    }
+
+    /* ===== Cuadro central (biografía) ===== */
+    .stage {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 110px 16px 40px;
+    }
+
+    .dialog-wrap {
+      position: relative;
+      width: min(760px, 100%);
+      transition: transform 0.28s ease;
+    }
+
+    /* Al abrir las redes, el mensaje principal sube un poco */
+    .dialog-wrap.social-open {
+      transform: translateY(clamp(-80px, -9vh, -40px));
+    }
+
+    .dialog {
+      width: 100%;
+      border-radius: 30px;
+      overflow: hidden;
+      background: #f1e8dd;
+      box-shadow:
+        0 0 0 3px #17141f,
+        0 12px 28px rgba(0, 0, 0, 0.5);
+      font-family: "HouseFont", "Trebuchet MS", "Segoe UI", Verdana, sans-serif;
+    }
+
+    /* Franja azul marino de arriba */
+    .dialog-header {
+      position: relative;
+      height: 92px;
+      background: linear-gradient(180deg, #424d79 0%, #3a4468 100%);
+      border-top: 4px solid #5c6a98;
+      border-bottom: 3px solid #272e4a;
+    }
+
+    /* Brillito en la esquina */
+    .dialog-header::after {
+      content: "";
+      position: absolute;
+      top: 12px;
+      left: 20px;
+      width: 24px;
+      height: 11px;
+      background: rgba(255, 255, 255, 0.55);
+      border-radius: 50%;
+      transform: rotate(-30deg);
+      filter: blur(0.5px);
+    }
+
+    /* Cuerpo color crema */
+    .dialog-body {
+      min-height: 300px;
+      padding: 48px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: #f1e8dd;
+    }
+
+    .dialog-text {
+      font-size: clamp(28px, 5.4vw, 48px);
+      font-weight: 800;
+      line-height: 1.25;
+      color: #5a4538;
+      text-shadow: 0 2px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    /* Franja beige de abajo (sin botón) */
+    .dialog-footer {
+      height: 84px;
+      background: #d9cdc4;
+      border-bottom: 9px solid #bcaea4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Flecha hacia abajo (usa el mismo estilo del botón de perfil) */
+    .dialog-footer .down-btn {
+      margin: 0;
+      width: 52px;
+      height: 52px;
+    }
+
+    .dialog-footer .down-btn svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .dialog-wrap.social-open .down-btn svg {
+      transform: rotate(180deg);
+    }
+
+    /* ===== Mensaje de redes sociales (más angosto) ===== */
+    .social-dialog {
+      position: absolute;
+      top: calc(100% + 22px);
+      left: 50%;
+      width: min(430px, 100%);
+      transform: translate(-50%, -16px);
+      opacity: 0;
+      visibility: hidden;
+      transition: transform 0.28s ease, opacity 0.25s ease, visibility 0.28s;
+    }
+
+    .dialog-wrap.social-open .social-dialog {
+      transform: translate(-50%, 0);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .social-dialog .dialog-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 46px;
+    }
+
+    .social-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #ffffff;
+      text-shadow: 0 2px 2px rgba(0, 0, 0, 0.55);
+    }
+
+    .social-dialog .dialog-body {
+      min-height: 0;
+      padding: 16px 14px;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+
+    .social-dialog .dialog-footer {
+      height: 26px;
+    }
+
+    .social-link {
+      display: block;
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      box-shadow: 0 0 0 3px #3a2f29, 0 3px 5px rgba(0, 0, 0, 0.35);
+      transition: transform 0.12s ease, filter 0.12s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .social-link svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 11px;
+    }
+
+    .social-link:hover {
+      transform: translateY(-3px) scale(1.06);
+      filter: brightness(1.1);
+    }
+
+    .social-link:active {
+      transform: scale(0.94);
+    }
+
+    /* ===== Easter egg: personaje + globo de diálogo ===== */
+    .egg {
+      position: fixed;
+      right: 22px;
+      bottom: 0;
+      z-index: 150;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      pointer-events: none;
+      visibility: hidden;
+    }
+
+    .egg.show {
+      visibility: visible;
+    }
+
+    .egg-bubble {
+      position: relative;
+      margin-bottom: 24px;
+      padding: 14px 32px 20px;
+      background: #ffffff;
+      border: 3px solid #1b1b1f;
+      border-radius: 28px;
+      box-shadow:
+        inset 0 -9px 0 #c4c4c8,
+        0 4px 8px rgba(0, 0, 0, 0.3);
+      font-size: 32px;
+      font-weight: 800;
+      color: #3b2f2a;
+      white-space: nowrap;
+      transform: scale(0);
+      transform-origin: 50% 100%;
+    }
+
+    /* Colita del globo */
+    .egg-bubble::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -17px;
+      width: 28px;
+      height: 28px;
+      margin-left: -14px;
+      background: #ffffff;
+      border-right: 3px solid #1b1b1f;
+      border-bottom: 3px solid #1b1b1f;
+      border-radius: 0 0 8px 0;
+      transform: rotate(45deg) skew(8deg, 8deg);
+    }
+
+    .egg-char {
+      display: block;
+      width: 320px;
+      height: auto;
+      filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.35));
+      transform: translateY(130%);
+      opacity: 0;
+    }
+
+    .egg.show .egg-char {
+      animation: eggIn 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.2) forwards;
+    }
+
+    .egg.show .egg-bubble {
+      animation: bubblePop 0.45s cubic-bezier(0.3, 1.5, 0.5, 1) 0.4s forwards;
+    }
+
+    .egg.show.leaving .egg-char {
+      animation: eggOut 0.4s ease-in forwards;
+    }
+
+    .egg.show.leaving .egg-bubble {
+      animation: bubbleOut 0.25s ease-in forwards;
+    }
+
+    @keyframes eggIn {
+      0%   { transform: translateY(130%); opacity: 0; }
+      60%  { transform: translateY(-8%); opacity: 1; }
+      80%  { transform: translateY(3%); opacity: 1; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes eggOut {
+      0%   { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(130%); opacity: 0; }
+    }
+
+    @keyframes bubblePop {
+      0%   { transform: scale(0); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes bubbleOut {
+      0%   { transform: scale(1); }
+      100% { transform: scale(0); }
+    }
+
+    /* Móvil: abajo al centro */
+    @media (max-width: 520px) {
+      .egg {
+        right: auto;
+        left: 50%;
+        margin-left: -150px;
+        width: 300px;
+      }
+      .egg-char { width: 230px; }
+      .egg-bubble { font-size: 26px; padding: 12px 26px 18px; }
+    }
+
+    /* ===== Mensaje "Acerca de" (con botón OK y fondo oscuro) ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: rgba(0, 0, 0, 0);
+      visibility: hidden;
+      transition: background 0.25s ease, visibility 0s linear 0.4s;
+    }
+
+    .modal-overlay.show {
+      visibility: visible;
+      background: rgba(0, 0, 0, 0.6);
+      transition: background 0.25s ease, visibility 0s;
+    }
+
+    .modal-dialog {
+      width: min(620px, 100%);
+      transform: scale(0);
+      opacity: 0;
+    }
+
+    .modal-dialog .dialog-body {
+      min-height: 240px;
+    }
+
+    .modal-overlay.show .modal-dialog {
+      animation: jumpIn 0.5s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+    }
+
+    .modal-overlay.hiding .modal-dialog {
+      animation: jumpOut 0.38s ease-in forwards;
+    }
+
+    /* Aparece "saltando" */
+    @keyframes jumpIn {
+      0%   { transform: translateY(50px) scale(0.5); opacity: 0; }
+      50%  { transform: translateY(-26px) scale(1.06); opacity: 1; }
+      72%  { transform: translateY(6px) scale(0.98); opacity: 1; }
+      88%  { transform: translateY(-6px) scale(1.01); opacity: 1; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    /* Desaparece "saltando" */
+    @keyframes jumpOut {
+      0%   { transform: translateY(0) scale(1); opacity: 1; }
+      35%  { transform: translateY(-24px) scale(1.05); opacity: 1; }
+      100% { transform: translateY(60px) scale(0.5); opacity: 0; }
+    }
+
+    /* Botón verde OK */
+    .ok-btn {
+      position: relative;
+      width: 150px;
+      height: 56px;
+      padding: 0;
+      cursor: pointer;
+      font-family: "HouseFont", "Trebuchet MS", "Segoe UI", Verdana, sans-serif;
+      font-size: 26px;
+      font-weight: 900;
+      color: #ffffff;
+      -webkit-text-stroke: 5px #2c3a2a;
+      paint-order: stroke fill;
+      text-shadow: 0 2px 0 rgba(0, 0, 0, 0.3);
+      background: linear-gradient(180deg, #9ce63c 0%, #74c91c 55%, #5fb214 100%);
+      border: 3px solid #36452f;
+      border-radius: 999px;
+      box-shadow:
+        inset 0 3px 0 rgba(255, 255, 255, 0.45),
+        inset 0 -5px 0 rgba(0, 0, 0, 0.16),
+        0 3px 5px rgba(0, 0, 0, 0.3);
+      transition: transform 0.12s ease, filter 0.12s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Brillo en la esquina del botón */
+    .ok-btn::before {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: 14px;
+      width: 24px;
+      height: 9px;
+      background: rgba(255, 255, 255, 0.65);
+      border-radius: 50%;
+      transform: rotate(-20deg);
+    }
+
+    .ok-btn:hover {
+      filter: brightness(1.08);
+    }
+
+    .ok-btn:active {
+      transform: scale(0.94);
+    }
+
+    @media (max-width: 520px) {
+      .dialog-header { height: 60px; }
+      .dialog-body { padding: 32px 22px; min-height: 220px; }
+      .dialog-footer { height: 56px; }
+    }
+
+    @media (max-width: 520px) {
+      .avatar-wrap { width: 64px; height: 64px; }
+      .profile-title { font-size: 16px; gap: 6px; }
+      .profile-title svg { width: 24px; height: 24px; }
+      .profile-name { font-size: 18px; }
+      .profile-main { gap: 10px; padding-right: 12px; }
+      .expand-btn { width: 30px; height: 30px; margin-left: 2px; }
+      .expand-btn svg { width: 14px; height: 14px; }
+
+      /* --- Móvil: la flecha apunta abajo y el ID sale por debajo del perfil --- */
+      .profile-card {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .profile-main .expand-btn svg {
+        transform: rotate(90deg); /* flecha hacia abajo */
+      }
+
+      .profile-card.open .profile-main .expand-btn svg {
+        transform: rotate(-90deg); /* flecha hacia arriba para ocultar */
+      }
+
+      .profile-extra {
+        max-width: none;
+        max-height: 0;
+        margin-left: 0;
+        margin-top: -16px;
+        transition: max-height 0.3s ease, opacity 0.25s ease;
+      }
+
+      .profile-card.open .profile-extra {
+        max-width: none;
+        max-height: 90px;
+      }
+
+      .profile-extra-inner {
+        height: 54px;
+        padding: 12px 16px 0;
+        justify-content: center;
+        border: 3px solid #7f95b5;
+        border-top: none;
+        border-radius: 0 0 16px 16px;
+      }
+      .profile-id { font-size: 17px; }
+    }
   </style>
 </head>
 <body>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TQGGXMSV"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
-
-  <!-- ══ Profile Card ══ -->
-  <div class="profile-card">
-
-    <!-- FOTO DE PERFIL:
-         Cambia el src="TU_FOTO.jpg" por la ruta de tu imagen.
-         Si no tienes una aún, se muestra el recuadro vacío. -->
-    <img class="profile-avatar" src="src/perfil.png" alt="Foto de perfil">
-
-    <!-- Izquierda: corona + nombre + barra -->
-    <div class="profile-left">
-      <div class="profile-name-row">
-        <!-- Corona emoji -->
-        <div class="crown-wrap">
-          <span class="crown-emoji">👑</span>
-          <span class="crown-level">61</span>
-        </div>
-        <span class="profile-name">House Cookie</span>
-      </div>
-      <!-- Barra de progreso -->
-      <div class="progress-track">
-        <div class="progress-fill"></div>
-      </div>
-    </div>
-
-    <!-- Divisor -->
-    <div class="profile-divider"></div>
-
-    <!-- Derecha: título + subtítulo -->
-    <div class="profile-right">
-      <div class="profile-title-row">
-        <!-- Corazón -->
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <path d="M7 12.5C7 12.5 1 8.5 1 4.5C1 2.5 2.5 1 4.5 1C5.8 1 7 2 7 2C7 2 8.2 1 9.5 1C11.5 1 13 2.5 13 4.5C13 8.5 7 12.5 7 12.5Z" fill="#ccb090"/>
-        </svg>
-        <span class="profile-title">El más dulce</span>
-      </div>
-      <span class="profile-subtitle" id="copyText" title="Add me on CRK!">NTYRY4958</span>
-    </div>
-
-    <!-- Flecha -->
-    <button class="profile-arrow" aria-label="Ver perfil">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M6 3L11 8L6 13" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
-  </div>
-
-  <!-- ── Botón menú ── -->
-  <svg class="menu-btn" id="menuBtn" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="g-side" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#3a5a7a"/>
-        <stop offset="100%" stop-color="#23394f"/>
-      </linearGradient>
-      <linearGradient id="g-face" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#8db3d4"/>
-        <stop offset="55%" stop-color="#6a90b2"/>
-        <stop offset="100%" stop-color="#4e7090"/>
-      </linearGradient>
-      <linearGradient id="g-shine" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.60"/>
-        <stop offset="100%" stop-color="#ffffff" stop-opacity="0.00"/>
-      </linearGradient>
-    </defs>
-    <rect x="6" y="14" width="88" height="82" rx="21" fill="url(#g-side)"/>
-    <rect x="6" y="6"  width="88" height="82" rx="21" fill="url(#g-face)"/>
-    <rect x="6" y="6"  width="88" height="82" rx="21" fill="none" stroke="#2c4560" stroke-width="3"/>
-    <rect x="10" y="10" width="80" height="74" rx="17" fill="none" stroke="#a8c8e4" stroke-width="1.5" opacity="0.5"/>
-    <rect x="13" y="11" width="74" height="34" rx="13" fill="url(#g-shine)"/>
-    <rect x="21" y="28" width="58" height="10" rx="5" fill="#dceaf6"/>
-    <rect x="21" y="28" width="58" height="10" rx="5" fill="none" stroke="#8aafc9" stroke-width="0.8"/>
-    <rect x="21" y="45" width="58" height="10" rx="5" fill="#dceaf6"/>
-    <rect x="21" y="45" width="58" height="10" rx="5" fill="none" stroke="#8aafc9" stroke-width="0.8"/>
-    <rect x="21" y="62" width="58" height="10" rx="5" fill="#dceaf6"/>
-    <rect x="21" y="62" width="58" height="10" rx="5" fill="none" stroke="#8aafc9" stroke-width="0.8"/>
-  </svg>
-
-
-  <!-- ══ Ventana permanente ══ -->
-  <div class="welcome-bg" id="welcomeBg">
-    <div class="welcome-modal">
-      <div class="welcome-header">
-        <span class="welcome-title">House Cookie</span>
-      </div>
-      <div class="welcome-body">
-        <div class="welcome-desc">
-          <p>¡Hola soy House Cookie! Soy un tierno Cookie conejito de Cookie Run 🐰</p>
-        </div>
-        <div class="welcome-socials">
-          <!-- Facebook -->
-          <a href="https://www.facebook.com/HouseTheCookie" target="_blank" rel="noopener noreferrer" class="social-btn sb-facebook" aria-label="Facebook">
-            <svg viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
-          </a>
-          <!-- YouTube -->
-          <a href="http://www.youtube.com/@House_Cookie" target="_blank" rel="noopener noreferrer" class="social-btn sb-youtube" aria-label="YouTube">
-            <svg viewBox="0 0 24 24" fill="white"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#ff0000"/></svg>
-          </a>
-          <!-- Twitter / X -->
-          <a href="https://x.com/House_Cookie" target="_blank" rel="noopener noreferrer" class="social-btn sb-twitter" aria-label="Twitter / X">
-            <svg viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          </a>
-          <!-- Instagram -->
-          <a href="https://www.instagram.com/housethecookie" target="_blank" rel="noopener noreferrer" class="social-btn sb-instagram" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-          </a>
-          <!-- TikTok -->
-          <a href="https://tiktok.com/@housethecookie" target="_blank" rel="noopener noreferrer" class="social-btn sb-tiktok" aria-label="TikTok">
-            <svg viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.97a8.27 8.27 0 004.84 1.55V7.07a4.85 4.85 0 01-1.07-.38z"/></svg>
-          </a>
-          <!-- Twitch -->
-          <a href="https://www.twitch.tv/house_cookie" target="_blank" rel="noopener noreferrer" class="social-btn sb-twitch" aria-label="Twitch">
-            <svg viewBox="0 0 24 24" fill="white"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg>
-          </a>
-          <!-- Discord -->
-          <a href="https://discord.gg/dJSfPXsGyF" target="_blank" rel="noopener noreferrer" class="social-btn sb-discord" aria-label="Discord">
-            <svg viewBox="0 0 24 24" fill="white"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z"/></svg>
-          </a>
-          <!-- Telegram -->
-          <a href="https://t.me/HouseTheCookie" target="_blank" rel="noopener noreferrer" class="social-btn sb-telegram" aria-label="Telegram">
-            <svg viewBox="0 0 24 24" fill="white"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.17 13.67l-2.938-.916c-.638-.203-.651-.638.136-.943l11.57-4.461c.537-.194 1.006.131.956.871z"/></svg>
-          </a>
-          <!-- Roblox -->
-          <a href="https://www.roblox.com/es/users/9179085856/profile" target="_blank" rel="noopener noreferrer" class="social-btn sb-roblox" aria-label="Roblox">
-            <svg viewBox="0 0 24 24" fill="white"><path d="M4.547 0L0 19.453 19.453 24 24 4.547zm10.638 13.88l-5.76-1.44 1.44-5.76 5.76 1.44z"/></svg>
-          </a>
+  <!-- Tarjeta de perfil -->
+  <div class="profile-card" id="profileCard">
+    <div class="profile-main">
+      <div class="avatar-wrap">
+        <div class="avatar">
+          <!-- La imagen se busca como perfil.png y, si no está, como perfil.jpg -->
+          <img id="avatarImg" alt="Foto de perfil">
         </div>
       </div>
-    </div>
-  </div>
 
-  <div class="overlay" id="overlay"></div>
-
-  <nav class="dropdown" id="dropdown">
-    <a href="#" id="linkInicio">Inicio</a>
-    <a href="#" id="linkAcerca">Acerca de</a>
-  </nav>
-
-  <div class="modal-bg" id="modalBg">
-    <div class="modal">
-      <div class="modal-header"></div>
-      <div class="modal-body">
-        <p>¡¡¡MIRA LA DESCRIPCION!!!</p>
+      <div class="profile-info">
+        <div class="profile-title">
+          <!-- Silueta de cara de conejo blanco -->
+          <svg viewBox="0 0 40 40" aria-hidden="true">
+            <ellipse cx="14" cy="10" rx="4.2" ry="10" transform="rotate(-9 14 10)" fill="#ffffff"/>
+            <ellipse cx="26" cy="10" rx="4.2" ry="10" transform="rotate(9 26 10)" fill="#ffffff"/>
+            <ellipse cx="20" cy="27" rx="14" ry="11.5" fill="#ffffff"/>
+          </svg>
+          <span>El más dulce</span>
+        </div>
+        <div class="profile-divider"></div>
+        <div class="profile-name">House Cookie</div>
       </div>
-      <button class="modal-close" id="modalClose" aria-label="Cerrar">
-        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
-          <line x1="7" y1="7" x2="21" y2="21" stroke="white" stroke-width="4" stroke-linecap="round"/>
-          <line x1="21" y1="7" x2="7"  y2="21" stroke="white" stroke-width="4" stroke-linecap="round"/>
+
+      <!-- Botón con flecha (a la derecha, a la altura de la línea divisoria) -->
+      <button class="expand-btn" id="expandBtn" aria-label="Mostrar ID" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#4b5970" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 12h15"/>
+          <path d="M13 6l6 6-6 6"/>
         </svg>
       </button>
     </div>
+
+    <!-- Parte que se despliega con el ID -->
+    <div class="profile-extra" id="profileExtra" aria-hidden="true">
+      <div class="profile-extra-inner">
+        <button class="profile-id" id="profileId" tabindex="-1">NTYRY4958</button>
+      </div>
+    </div>
   </div>
 
-  <!-- ══ Easter egg: personaje sorpresa ══ -->
-  <div class="easter-wrap" id="easterWrap">
-    <img class="easter-char" src="src/yo.png" alt="Sorpresa" draggable="false">
+  <!-- Botón de menú -->
+  <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="sideMenu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <!-- Panel del menú -->
+  <nav class="side-menu" id="sideMenu" aria-label="Menú principal">
+    <div class="side-menu-header"></div>
+    <ul class="side-menu-list">
+      <li>
+        <a class="side-menu-item" id="aboutItem">
+          <!-- Icono de perfil (blanco/plateado) -->
+          <svg viewBox="0 0 40 36" aria-hidden="true">
+            <defs>
+              <linearGradient id="silver" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#f4f7fb"/>
+                <stop offset="1" stop-color="#b4bfcd"/>
+              </linearGradient>
+            </defs>
+            <!-- Persona de atrás -->
+            <circle cx="27" cy="10" r="6" fill="#c6cfdb"/>
+            <path d="M16 31 Q16 19 27 19 Q38 19 38 31 Z" fill="#c6cfdb"/>
+            <!-- Persona de adelante -->
+            <circle cx="14" cy="13" r="7" fill="url(#silver)"/>
+            <path d="M1 34 Q1 21 14 21 Q27 21 27 34 Z" fill="url(#silver)"/>
+          </svg>
+          <span>Acerca de</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Cuadro central con la biografía (fijo, no se quita) -->
+  <main class="stage">
+    <div class="dialog-wrap" id="dialogWrap">
+      <section class="dialog">
+        <div class="dialog-header"></div>
+        <div class="dialog-body">
+          <p class="dialog-text">¡Hola soy House Cookie! Soy un tierno Cookie conejito de Cookie Run 🐰</p>
+        </div>
+        <div class="dialog-footer">
+          <!-- Flecha hacia abajo: despliega las redes sociales -->
+          <button class="expand-btn down-btn" id="socialBtn" aria-label="Mostrar redes sociales" aria-expanded="false" aria-controls="socialDialog">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#4b5970" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 4v15"/>
+              <path d="M6 13l6 6 6-6"/>
+            </svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- Mensaje de redes sociales -->
+      <section class="dialog social-dialog" id="socialDialog" aria-label="Redes sociales" aria-hidden="true">
+        <div class="dialog-header">
+          <span class="social-title">Redes sociales</span>
+        </div>
+        <div class="dialog-body">
+          <!-- CAMBIA cada href por la URL de tu red social -->
+
+          <!-- YouTube -->
+          <a class="social-link" href="http://www.youtube.com/@House_Cookie" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <rect width="48" height="48" fill="#ff0000"/>
+              <rect x="9" y="14" width="30" height="20" rx="7" fill="#ffffff"/>
+              <path d="M20.5 19.5v9l8-4.5z" fill="#ff0000"/>
+            </svg>
+          </a>
+
+          <!-- Facebook -->
+          <a class="social-link" href="https://www.facebook.com/HouseTheCookie" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <rect width="48" height="48" fill="#1877f2"/>
+              <path d="M26.5 38V25.5h4.2l.7-5h-4.9v-3.1c0-1.4.4-2.4 2.4-2.4h2.6v-4.4c-.5-.1-2-.2-3.8-.2-3.9 0-6.3 2.3-6.3 6.6v3.5h-4.2v5h4.2V38z" fill="#ffffff"/>
+            </svg>
+          </a>
+
+          <!-- X (Twitter) -->
+          <a class="social-link" href="https://x.com/House_Cookie" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <rect width="48" height="48" fill="#000000"/>
+              <path d="M13 12.5L35 35.5" stroke="#ffffff" stroke-width="4.2" stroke-linecap="round"/>
+              <path d="M35 12.5L13 35.5" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round"/>
+            </svg>
+          </a>
+
+          <!-- Instagram -->
+          <a class="social-link" href="https://www.instagram.com/housethecookie" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <defs>
+                <linearGradient id="igGrad" x1="0" y1="1" x2="1" y2="0">
+                  <stop offset="0" stop-color="#fdd35b"/>
+                  <stop offset="0.35" stop-color="#f4663a"/>
+                  <stop offset="0.65" stop-color="#d62976"/>
+                  <stop offset="1" stop-color="#5b51d8"/>
+                </linearGradient>
+              </defs>
+              <rect width="48" height="48" fill="url(#igGrad)"/>
+              <rect x="12" y="12" width="24" height="24" rx="7" fill="none" stroke="#ffffff" stroke-width="3"/>
+              <circle cx="24" cy="24" r="5.5" fill="none" stroke="#ffffff" stroke-width="3"/>
+              <circle cx="31" cy="17" r="1.8" fill="#ffffff"/>
+            </svg>
+          </a>
+
+          <!-- TikTok -->
+          <a class="social-link" href="https://tiktok.com/@housethecookie" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <defs>
+                <g id="ttNote" fill="none" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M26 11v17.5a5.5 5.5 0 1 1-5.5-5.5"/>
+                  <path d="M26 11c.4 4.2 3.4 6.9 8 7.2"/>
+                </g>
+              </defs>
+              <rect width="48" height="48" fill="#000000"/>
+              <use href="#ttNote" stroke="#25f4ee" transform="translate(-1.5 -1)"/>
+              <use href="#ttNote" stroke="#fe2c55" transform="translate(1.5 1)"/>
+              <use href="#ttNote" stroke="#ffffff"/>
+            </svg>
+          </a>
+
+          <!-- Discord -->
+          <a class="social-link" href="https://discord.gg/dJSfPXsGyF" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <rect width="48" height="48" fill="#5865f2"/>
+              <path d="M13.5 33.5c-.4-5 .8-10 3.5-15.5 2.7-1.700 6.100-2.700 6.100-2.700l.7 1.400c.8-.1 1.600-.1 2.400 0l.7-1.400s3.400 1 6.100 2.700c2.700 5.500 3.900 10.500 3.500 15.500-2.200 1.800-4.800 2.700-4.800 2.700l-1.200-2.300c.7-.3 1.400-.6 2-1.100-.2-.1-.4-.2-.5-.4-4.200 2-9 2-13.200 0-.2.200-.3.300-.5.400.6.500 1.300.8 2 1.100l-1.200 2.300s-2.600-.9-4.800-2.700z" fill="#ffffff"/>
+              <circle cx="19.5" cy="26.5" r="2.5" fill="#5865f2"/>
+              <circle cx="28.5" cy="26.5" r="2.5" fill="#5865f2"/>
+            </svg>
+          </a>
+
+          <!-- Telegram -->
+          <a class="social-link" href="https://t.me/HouseTheCookie" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <defs>
+                <linearGradient id="tgGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#37aee2"/>
+                  <stop offset="1" stop-color="#1e96c8"/>
+                </linearGradient>
+              </defs>
+              <rect width="48" height="48" fill="url(#tgGrad)"/>
+              <path d="M9.5 23.2L37.8 12.3C39 11.8 40 12.6 39.6 14.3L34.8 36.5C34.5 38 33.5 38.4 32.2 37.7L25.2 32.5L21.8 35.8C21.4 36.2 21.1 36.5 20.4 36.5L20.9 29.4L33.7 17.8C34.3 17.3 33.6 17 32.8 17.5L17 27.4L10.2 25.3C8.7 24.8 8.7 23.8 9.5 23.2Z" fill="#ffffff"/>
+            </svg>
+          </a>
+
+          <!-- Roblox -->
+          <a class="social-link" href="https://www.roblox.com/es/users/9179085856/profile" target="_blank" rel="noopener noreferrer" aria-label="Roblox">
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <rect width="48" height="48" fill="#232527"/>
+              <rect x="13" y="13" width="22" height="22" rx="3" fill="#ffffff" transform="rotate(-15 24 24)"/>
+              <rect x="20.5" y="20.5" width="7" height="7" fill="#232527" transform="rotate(-15 24 24)"/>
+            </svg>
+          </a>
+        </div>
+        <div class="dialog-footer"></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Easter egg: aparece al tocar la foto de perfil -->
+  <div class="egg" id="egg" aria-hidden="true">
+    <div class="egg-bubble">¡Sorpresa!</div>
+    <img class="egg-char" id="eggChar" src="yo.png" alt="" onerror="this.style.display='none'">
   </div>
-  <div class="easter-bubble" id="easterBubble"><span>¡Sorpresa!</span></div>
+
+  <!-- Mensaje de "Acerca de" -->
+  <div class="modal-overlay" id="aboutModal" role="dialog" aria-modal="true" aria-label="Acerca de" aria-hidden="true">
+    <section class="dialog modal-dialog">
+      <div class="dialog-header"></div>
+      <div class="dialog-body">
+        <p class="dialog-text">¡MIRA LA DESCRIPCION!</p>
+      </div>
+      <div class="dialog-footer">
+        <button class="ok-btn" id="okBtn">OK</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- Aquí iremos armando House Cookie paso por paso -->
 
   <script>
-    // ── Easter egg: 20 clics en el avatar ──
-    const avatar      = document.querySelector('.profile-avatar');
-    const easterWrap  = document.getElementById('easterWrap');
-    const easterBubble= document.getElementById('easterBubble');
-    let clickCount    = 0;
-    let clickTimer    = null;
-    let hideTimer     = null;
+    const menuBtn = document.getElementById('menuBtn');
+    const sideMenu = document.getElementById('sideMenu');
 
-    avatar.addEventListener('click', () => {
-      clickCount++;
-      clearTimeout(clickTimer);
-      clickTimer = setTimeout(() => { clickCount = 0; }, 3000);
+    function toggleMenu(forceState) {
+      const open = typeof forceState === 'boolean'
+        ? forceState
+        : !sideMenu.classList.contains('open');
+      sideMenu.classList.toggle('open', open);
+      menuBtn.setAttribute('aria-expanded', String(open));
+    }
 
-      if (clickCount >= 20) {
-        clickCount = 0;
-        clearTimeout(clickTimer);
-        clearTimeout(hideTimer);
+    menuBtn.addEventListener('click', () => toggleMenu());
 
-        // Mostrar personaje
-        easterWrap.classList.add('visible');
-        // Esperar a que termine la animación (3.5s) y luego posicionar y mostrar burbuja
-        setTimeout(() => {
-          const rect     = easterWrap.getBoundingClientRect();
-          const bubbleH  = easterBubble.offsetHeight || 60;
-          // La parte visible del personaje empieza en rect.top (borde superior del wrapper)
-          // Pegamos la burbuja justo encima: bottom = ventana - rect.top + pequeño margen
-          easterBubble.style.left      = (rect.left + rect.width / 2) + 'px';
-          easterBubble.style.bottom    = (window.innerHeight - rect.top + 8) + 'px';
-          easterBubble.style.transform = 'translateX(-50%)';
-          easterBubble.style.right     = 'auto';
-          easterBubble.style.top       = 'auto';
-          easterBubble.classList.add('visible');
-        }, 3500);
+    // Cerrar con Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') toggleMenu(false);
+    });
 
-        // Esconder todo después de 8 segundos
-        hideTimer = setTimeout(() => {
-          easterWrap.classList.remove('visible');
-          easterBubble.classList.remove('visible');
-        }, 8000);
+    /* ===== Mensaje "Acerca de" ===== */
+    const aboutItem = document.getElementById('aboutItem');
+    const aboutModal = document.getElementById('aboutModal');
+    const okBtn = document.getElementById('okBtn');
+    let modalBusy = false;
+
+    function openAbout() {
+      if (modalBusy || aboutModal.classList.contains('show')) return;
+      toggleMenu(false); // cierra el menú lateral
+      aboutModal.classList.remove('hiding');
+      aboutModal.classList.add('show');
+      aboutModal.setAttribute('aria-hidden', 'false');
+      okBtn.focus({ preventScroll: true });
+    }
+
+    function closeAbout() {
+      if (modalBusy || !aboutModal.classList.contains('show')) return;
+      modalBusy = true;
+      aboutModal.classList.add('hiding');
+      aboutModal.classList.remove('show');
+      aboutModal.setAttribute('aria-hidden', 'true');
+      setTimeout(() => {
+        aboutModal.classList.remove('hiding');
+        modalBusy = false;
+      }, 400);
+    }
+
+    aboutItem.setAttribute('role', 'button');
+    aboutItem.setAttribute('tabindex', '0');
+    aboutItem.addEventListener('click', openAbout);
+    aboutItem.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openAbout();
       }
     });
-    const copyText = document.getElementById('copyText');
-    copyText.addEventListener('click', () => {
-      const texto = copyText.textContent;
-      navigator.clipboard.writeText(texto).then(() => {
-        copyText.classList.add('copied');
-        const original = copyText.textContent;
-        copyText.textContent = '¡Copiado!';
+    okBtn.addEventListener('click', closeAbout);
+
+    /* ===== Perfil ===== */
+
+    // Foto: intenta perfil.png y luego perfil.jpg
+    const avatarImg = document.getElementById('avatarImg');
+    const avatarSources = ['perfil.png', 'perfil.jpg'];
+    let avatarIndex = 0;
+
+    function loadNextAvatar() {
+      if (avatarIndex < avatarSources.length) {
+        avatarImg.style.display = 'block';
+        avatarImg.src = avatarSources[avatarIndex++];
+      } else {
+        avatarImg.style.display = 'none'; // se queda el fondo placeholder
+      }
+    }
+    avatarImg.addEventListener('error', loadNextAvatar);
+    loadNextAvatar();
+
+    // Easter egg: clic/toque en la foto de perfil
+    const egg = document.getElementById('egg');
+    const avatarWrap = document.querySelector('.avatar-wrap');
+    let eggBusy = false;
+
+    const EGG_CLICKS = 15;      // clics/toques seguidos necesarios
+    const EGG_MAX_GAP = 2000;   // máximo 2 segundos entre cada clic
+    let eggCount = 0;
+    let eggResetTimer = null;
+
+    function showEgg() {
+      eggBusy = true;
+      eggCount = 0;
+      clearTimeout(eggResetTimer);
+      egg.classList.remove('leaving');
+      egg.classList.add('show');
+
+      // Se queda 4 segundos y luego se va
+      setTimeout(() => {
+        egg.classList.add('leaving');
         setTimeout(() => {
-          copyText.textContent = original;
-          copyText.classList.remove('copied');
-        }, 1500);
-      });
-    });
-    function actualizarFondo() {
-      // Hora actual en zona CDMX (America/Mexico_City)
-      const ahoraCDMX = new Date().toLocaleString('en-US', { timeZone: 'America/Mexico_City' });
-      const hora = new Date(ahoraCDMX).getHours();
-
-      // Noche: 19:00 (7 PM) a 06:59
-      const esNoche = hora >= 19 || hora < 7;
-      const bg = esNoche ? 'src/bgnight.png' : 'src/bg.png';
-      document.body.style.backgroundImage = `url('${bg}')`;
+          egg.classList.remove('show', 'leaving');
+          eggBusy = false;
+        }, 450);
+      }, 4000);
     }
 
-    actualizarFondo();
-    // Revisar cada minuto por si cambia la hora mientras el usuario está en la página
-    setInterval(actualizarFondo, 60000);
-    const btn        = document.getElementById('menuBtn');
-    const dropdown   = document.getElementById('dropdown');
-    const overlay    = document.getElementById('overlay');
-    const modalBg    = document.getElementById('modalBg');
-    const modalClose = document.getElementById('modalClose');
-    const linkAcerca = document.getElementById('linkAcerca');
-    let isOpen = false;
+    avatarWrap.addEventListener('click', () => {
+      if (eggBusy) return;
 
-    function toggleMenu(state) {
-      isOpen = state;
-      btn.classList.toggle('pressed', isOpen);
-      dropdown.classList.toggle('open', isOpen);
-      overlay.classList.toggle('open', isOpen);
-    }
-    function openModal()  { modalBg.classList.add('open'); }
-    function closeModal() { modalBg.classList.remove('open'); }
+      eggCount++;
+      clearTimeout(eggResetTimer);
 
-    btn.addEventListener('click', () => toggleMenu(!isOpen));
-    overlay.addEventListener('click', () => toggleMenu(false));
-    linkAcerca.addEventListener('click', (e) => {
-      e.preventDefault(); toggleMenu(false); setTimeout(openModal, 180);
+      if (eggCount >= EGG_CLICKS) {
+        showEgg();
+        return;
+      }
+
+      // Si pasan más de 2 segundos sin clic, se cancela y empieza de cero
+      eggResetTimer = setTimeout(() => { eggCount = 0; }, EGG_MAX_GAP);
     });
-    modalClose.addEventListener('click', closeModal);
-    modalBg.addEventListener('click', (e) => { if (e.target === modalBg) closeModal(); });
+
+    // Desplegar / ocultar el ID
+    const profileCard = document.getElementById('profileCard');
+    const expandBtn = document.getElementById('expandBtn');
+    const profileExtra = document.getElementById('profileExtra');
+    const profileId = document.getElementById('profileId');
+
+    expandBtn.addEventListener('click', () => {
+      const open = profileCard.classList.toggle('open');
+      expandBtn.setAttribute('aria-expanded', String(open));
+      profileExtra.setAttribute('aria-hidden', String(!open));
+      profileId.tabIndex = open ? 0 : -1;
+    });
+
+    // Copiar el ID al portapapeles (sin mensajes)
+    function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+      } else {
+        fallbackCopy(text);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+
+    profileId.addEventListener('click', () => copyText(profileId.textContent.trim()));
+
+    /* ===== Fondo de la página ===== */
+    // DÍA  (6:30 am a 6:30 pm, hora de México): bg.png o bg.jpg
+    // NOCHE (6:30 pm a 6:30 am, hora de México): bg_night.png o bg_night.jpg
+    // Si no existe la imagen que toca, se queda el verde #017C00
+    const bgSets = {
+      day:   ['bg.png', 'bg.jpg'],
+      night: ['bg_night.png', 'bg_night.jpg']
+    };
+    const DAY_START = 6 * 60 + 30;    // 6:30 am
+    const NIGHT_START = 18 * 60 + 30; // 6:30 pm
+
+    // Minutos transcurridos del día en la Ciudad de México
+    function getMexicoMinutes() {
+      const parts = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'America/Mexico_City',
+        hour: '2-digit',
+        minute: '2-digit',
+        hourCycle: 'h23'
+      }).formatToParts(new Date());
+      const h = parseInt(parts.find(p => p.type === 'hour').value, 10);
+      const m = parseInt(parts.find(p => p.type === 'minute').value, 10);
+      return h * 60 + m;
+    }
+
+    function currentPeriod() {
+      const t = getMexicoMinutes();
+      return (t >= NIGHT_START || t < DAY_START) ? 'night' : 'day';
+    }
+
+    let appliedPeriod = null;
+    let bgToken = 0;
+
+    function applyBackground(period) {
+      appliedPeriod = period;
+      const token = ++bgToken;
+      const sources = bgSets[period];
+
+      (function tryLoad(i) {
+        if (token !== bgToken) return; // llegó un cambio más nuevo
+        if (i >= sources.length) {
+          document.body.style.backgroundImage = 'none'; // se queda #017C00
+          return;
+        }
+        const img = new Image();
+        img.onload = () => {
+          if (token === bgToken) {
+            document.body.style.backgroundImage = 'url("' + sources[i] + '")';
+          }
+        };
+        img.onerror = () => tryLoad(i + 1);
+        img.src = sources[i];
+      })(0);
+    }
+
+    function checkBackground() {
+      const period = currentPeriod();
+      if (period !== appliedPeriod) applyBackground(period);
+    }
+
+    checkBackground();
+    setInterval(checkBackground, 30000); // revisa cada 30 segundos
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) checkBackground();
+    });
+
+    /* ===== Redes sociales ===== */
+    const dialogWrap = document.getElementById('dialogWrap');
+    const socialBtn = document.getElementById('socialBtn');
+    const socialDialog = document.getElementById('socialDialog');
+
+    socialBtn.addEventListener('click', () => {
+      const open = dialogWrap.classList.toggle('social-open');
+      socialBtn.setAttribute('aria-expanded', String(open));
+      socialDialog.setAttribute('aria-hidden', String(!open));
+    });
   </script>
 </body>
 </html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>500 Internal Server Error | House Cookie</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="shortcut icon" href="favicon.ico">
+
+  <style>
+    /* Fuente personalizada (font.ttf junto al 500.html) */
+    @font-face {
+      font-family: "HouseFont";
+      src: url("font.ttf") format("truetype");
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      background-color: #017C00; /* Respaldo si no hay bg.png / bg.jpg */
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      font-family: "HouseFont", "Trebuchet MS", "Segoe UI", Verdana, sans-serif;
+    }
+
+    /* ===== Mensaje central ===== */
+    .stage {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+
+    .dialog {
+      width: min(620px, 100%);
+      border-radius: 30px;
+      overflow: hidden;
+      background: #f1e8dd;
+      box-shadow:
+        0 0 0 3px #17141f,
+        0 12px 28px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Franja azul marino de arriba */
+    .dialog-header {
+      position: relative;
+      height: 92px;
+      background: linear-gradient(180deg, #424d79 0%, #3a4468 100%);
+      border-top: 4px solid #5c6a98;
+      border-bottom: 3px solid #272e4a;
+    }
+
+    /* Brillito en la esquina */
+    .dialog-header::after {
+      content: "";
+      position: absolute;
+      top: 12px;
+      left: 20px;
+      width: 24px;
+      height: 11px;
+      background: rgba(255, 255, 255, 0.55);
+      border-radius: 50%;
+      transform: rotate(-30deg);
+      filter: blur(0.5px);
+    }
+
+    /* Cuerpo color crema */
+    .dialog-body {
+      min-height: 240px;
+      padding: 48px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: #f1e8dd;
+    }
+
+    .dialog-text {
+      font-size: clamp(30px, 6vw, 52px);
+      font-weight: 800;
+      line-height: 1.25;
+      color: #5a4538;
+      text-shadow: 0 2px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    /* Franja beige de abajo con el botón */
+    .dialog-footer {
+      height: 84px;
+      background: #d9cdc4;
+      border-bottom: 9px solid #bcaea4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Botón verde OK */
+    .ok-btn {
+      position: relative;
+      width: 150px;
+      height: 56px;
+      padding: 0;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 26px;
+      font-weight: 900;
+      color: #ffffff;
+      -webkit-text-stroke: 5px #2c3a2a;
+      paint-order: stroke fill;
+      text-shadow: 0 2px 0 rgba(0, 0, 0, 0.3);
+      background: linear-gradient(180deg, #9ce63c 0%, #74c91c 55%, #5fb214 100%);
+      border: 3px solid #36452f;
+      border-radius: 999px;
+      box-shadow:
+        inset 0 3px 0 rgba(255, 255, 255, 0.45),
+        inset 0 -5px 0 rgba(0, 0, 0, 0.16),
+        0 3px 5px rgba(0, 0, 0, 0.3);
+      transition: transform 0.12s ease, filter 0.12s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Brillo en la esquina del botón */
+    .ok-btn::before {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: 14px;
+      width: 24px;
+      height: 9px;
+      background: rgba(255, 255, 255, 0.65);
+      border-radius: 50%;
+      transform: rotate(-20deg);
+    }
+
+    .ok-btn:hover {
+      filter: brightness(1.08);
+    }
+
+    .ok-btn:active {
+      transform: scale(0.94);
+    }
+
+    @media (max-width: 520px) {
+      .dialog-header { height: 60px; }
+      .dialog-body { padding: 32px 22px; min-height: 180px; }
+      .dialog-footer { height: 70px; }
+      .ok-btn { width: 130px; height: 50px; font-size: 23px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage">
+    <section class="dialog" role="alert">
+      <div class="dialog-header"></div>
+      <div class="dialog-body">
+        <h1 class="dialog-text">500 internal server error</h1>
+      </div>
+      <div class="dialog-footer">
+        <button class="ok-btn" id="okBtn">OK</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    /* ===== Fondo: solo bg.png o bg.jpg (sin bg_night) ===== */
+    // Si no existe ninguno, se queda el verde #017C00
+    const bgSources = ['bg.png', 'bg.jpg'];
+
+    (function loadBackground(i) {
+      if (i >= bgSources.length) return;
+      const img = new Image();
+      img.onload = () => {
+        document.body.style.backgroundImage = 'url("' + bgSources[i] + '")';
+      };
+      img.onerror = () => loadBackground(i + 1);
+      img.src = bgSources[i];
+    })(0);
+
+    /* ===== Botón OK: redirige al inicio ===== */
+    document.getElementById('okBtn').addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

@@ -1,135 +1,200 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>404 — Página no encontrada</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 Not Found | House Cookie</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="shortcut icon" href="favicon.ico">
+
   <style>
+    /* Fuente personalizada (font.ttf junto al 404.html) */
     @font-face {
-      font-family: 'MiFuente';
-      src: url('src/mifuente.ttf') format('truetype');
-      font-weight: normal; font-style: normal;
+      font-family: "HouseFont";
+      src: url("font.ttf") format("truetype");
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
     }
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     html, body {
-      width: 100%; height: 100%;
-      font-family: 'MiFuente', 'Arial Rounded MT Bold', Arial, sans-serif;
-      background-color: #00b140;
-      background-image: url('src/bg.png');
-      background-size: cover;
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      background-color: #017C00; /* Respaldo si no hay bg.png / bg.jpg */
       background-position: center;
+      background-size: cover;
       background-repeat: no-repeat;
       background-attachment: fixed;
-      display: flex; align-items: center; justify-content: center;
+      font-family: "HouseFont", "Trebuchet MS", "Segoe UI", Verdana, sans-serif;
+    }
+
+    /* ===== Mensaje central ===== */
+    .stage {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+
+    .dialog {
+      width: min(620px, 100%);
+      border-radius: 30px;
       overflow: hidden;
+      background: #f1e8dd;
+      box-shadow:
+        0 0 0 3px #17141f,
+        0 12px 28px rgba(0, 0, 0, 0.5);
     }
-    .overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.52);
-      z-index: 1;
+
+    /* Franja azul marino de arriba */
+    .dialog-header {
+      position: relative;
+      height: 92px;
+      background: linear-gradient(180deg, #424d79 0%, #3a4468 100%);
+      border-top: 4px solid #5c6a98;
+      border-bottom: 3px solid #272e4a;
     }
-    .modal-wrap {
-      position: relative; z-index: 2;
-      width: min(88vw, 560px);
-      border-radius: 24px; overflow: visible;
-      filter: drop-shadow(0 14px 36px rgba(0,0,0,0.75));
-      animation: popIn 0.35s cubic-bezier(0.34,1.45,0.64,1) both;
+
+    /* Brillito en la esquina */
+    .dialog-header::after {
+      content: "";
+      position: absolute;
+      top: 12px;
+      left: 20px;
+      width: 24px;
+      height: 11px;
+      background: rgba(255, 255, 255, 0.55);
+      border-radius: 50%;
+      transform: rotate(-30deg);
+      filter: blur(0.5px);
     }
-    @keyframes popIn {
-      from { opacity: 0; transform: scale(0.78) translateY(30px); }
-      to   { opacity: 1; transform: scale(1)    translateY(0); }
+
+    /* Cuerpo color crema */
+    .dialog-body {
+      min-height: 240px;
+      padding: 48px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: #f1e8dd;
     }
-    .modal-wrap.closing {
-      animation: popOut 0.30s cubic-bezier(0.55,0,1,0.45) both;
+
+    .dialog-text {
+      font-size: clamp(30px, 6vw, 52px);
+      font-weight: 800;
+      line-height: 1.25;
+      color: #5a4538;
+      text-shadow: 0 2px 0 rgba(255, 255, 255, 0.7);
     }
-    @keyframes popOut {
-      from { opacity: 1; transform: scale(1)    translateY(0); }
-      to   { opacity: 0; transform: scale(0.78) translateY(30px); }
+
+    /* Franja beige de abajo con el botón */
+    .dialog-footer {
+      height: 84px;
+      background: #d9cdc4;
+      border-bottom: 9px solid #bcaea4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .modal-header {
-      background: linear-gradient(180deg, #3d4f72 0%, #252f4a 100%);
-      border-radius: 24px 24px 0 0;
-      height: 66px;
-      border: 3.5px solid #161e30; border-bottom: none;
-      position: relative; overflow: hidden;
+
+    /* Botón verde OK */
+    .ok-btn {
+      position: relative;
+      width: 150px;
+      height: 56px;
+      padding: 0;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 26px;
+      font-weight: 900;
+      color: #ffffff;
+      -webkit-text-stroke: 5px #2c3a2a;
+      paint-order: stroke fill;
+      text-shadow: 0 2px 0 rgba(0, 0, 0, 0.3);
+      background: linear-gradient(180deg, #9ce63c 0%, #74c91c 55%, #5fb214 100%);
+      border: 3px solid #36452f;
+      border-radius: 999px;
+      box-shadow:
+        inset 0 3px 0 rgba(255, 255, 255, 0.45),
+        inset 0 -5px 0 rgba(0, 0, 0, 0.16),
+        0 3px 5px rgba(0, 0, 0, 0.3);
+      transition: transform 0.12s ease, filter 0.12s ease;
+      -webkit-tap-highlight-color: transparent;
     }
-    .modal-header::after {
-      content: ''; position: absolute;
-      top: 5px; left: 14px; right: 14px; height: 20px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 100%);
-      border-radius: 10px;
-    }
-    .modal-body {
-      background: linear-gradient(180deg, #eeead9 0%, #e5e0ce 75%, #d8d2c0 100%);
-      border: 3.5px solid #161e30; border-top: none;
-      border-radius: 0 0 22px 22px;
-      padding: 44px 48px 56px;
-      position: relative; overflow: hidden; text-align: center;
-    }
-    .modal-body::after {
-      content: ''; position: absolute;
-      bottom: 0; left: 0; right: 0; height: 70px;
-      background: rgba(0,0,0,0.065);
-      border-radius: 0 0 19px 19px; pointer-events: none;
-    }
-    .error-text {
-      font-size: 26px; font-weight: 900;
-      color: #5c5240;
-      white-space: nowrap;
-      position: relative; z-index: 1;
-    }
-    .modal-close {
-      position: absolute; top: -22px; right: -22px;
-      width: 52px; height: 52px;
-      border-radius: 50%; border: none; cursor: pointer;
-      background: radial-gradient(circle at 38% 28%, #72cef5 0%, #2a9ad8 50%, #186daa 100%);
-      box-shadow: 0 6px 0 #0e4a78, 0 8px 18px rgba(0,0,0,0.55);
-      display: flex; align-items: center; justify-content: center;
-      transition: transform 0.11s, box-shadow 0.11s; z-index: 10;
-    }
-    .modal-close:hover  { transform: scale(1.09); }
-    .modal-close:active { transform: translateY(4px); box-shadow: 0 2px 0 #0e4a78; }
-    .modal-close::before {
-      content: ''; position: absolute;
-      top: 7px; left: 11px; width: 16px; height: 9px;
-      background: rgba(255,255,255,0.42); border-radius: 50%;
+
+    /* Brillo en la esquina del botón */
+    .ok-btn::before {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: 14px;
+      width: 24px;
+      height: 9px;
+      background: rgba(255, 255, 255, 0.65);
+      border-radius: 50%;
       transform: rotate(-20deg);
+    }
+
+    .ok-btn:hover {
+      filter: brightness(1.08);
+    }
+
+    .ok-btn:active {
+      transform: scale(0.94);
+    }
+
+    @media (max-width: 520px) {
+      .dialog-header { height: 60px; }
+      .dialog-body { padding: 32px 22px; min-height: 180px; }
+      .dialog-footer { height: 70px; }
+      .ok-btn { width: 130px; height: 50px; font-size: 23px; }
     }
   </style>
 </head>
 <body>
-  <div class="overlay"></div>
-
-  <div class="modal-wrap" id="modalWrap">
-    <div class="modal-header"></div>
-    <div class="modal-body">
-      <div class="error-text">404 NOT FOUND</div>
-    </div>
-    <button class="modal-close" id="closeBtn" aria-label="Cerrar y volver al inicio">
-      <svg viewBox="0 0 28 28" fill="none" width="22" height="22">
-        <line x1="7" y1="7" x2="21" y2="21" stroke="white" stroke-width="4" stroke-linecap="round"/>
-        <line x1="21" y1="7" x2="7"  y2="21" stroke="white" stroke-width="4" stroke-linecap="round"/>
-      </svg>
-    </button>
-  </div>
+  <main class="stage">
+    <section class="dialog" role="alert">
+      <div class="dialog-header"></div>
+      <div class="dialog-body">
+        <h1 class="dialog-text">404 not found</h1>
+      </div>
+      <div class="dialog-footer">
+        <button class="ok-btn" id="okBtn">OK</button>
+      </div>
+    </section>
+  </main>
 
   <script>
-    const modal    = document.getElementById('modalWrap');
-    const closeBtn = document.getElementById('closeBtn');
+    /* ===== Fondo: solo bg.png o bg.jpg (sin bg_night) ===== */
+    // Si no existe ninguno, se queda el verde #017C00
+    const bgSources = ['bg.png', 'bg.jpg'];
 
-    closeBtn.addEventListener('click', () => {
-      // Animación de cierre
-      modal.classList.add('closing');
+    (function loadBackground(i) {
+      if (i >= bgSources.length) return;
+      const img = new Image();
+      img.onload = () => {
+        document.body.style.backgroundImage = 'url("' + bgSources[i] + '")';
+      };
+      img.onerror = () => loadBackground(i + 1);
+      img.src = bgSources[i];
+    })(0);
 
-      // Al terminar la animación → redirigir
-      modal.addEventListener('animationend', () => {
-        window.location.href = 'index.html';
-      }, { once: true });
-
-      // Si por alguna razón la animación no dispara → forzar en 3s
-      setTimeout(() => {
-        window.location.href = 'index.html';
-      }, 3000);
+    /* ===== Botón OK: redirige al inicio ===== */
+    document.getElementById('okBtn').addEventListener('click', () => {
+      window.location.href = 'index.html';
     });
   </script>
 </body>
