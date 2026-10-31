@@ -57,6 +57,27 @@
       min-height: 100%;
     }
 
+    /* Color base del "lienzo" (lo que iOS usa para pintar las barras de arriba y abajo).
+       El JS lo cambia por el color real de los bordes de tu bg */
+    html {
+      background-color: #017C00;
+    }
+
+    /* Franjas finas fijas pegadas al borde de arriba y abajo.
+       iOS toma su color para pintar la barra de estado y la barra inferior */
+    .bg-edge {
+      position: fixed;
+      left: 0;
+      right: 0;
+      height: 8px;
+      z-index: -1;
+      background-color: #017C00;
+      pointer-events: none;
+    }
+
+    .bg-edge.top    { top: 0; }
+    .bg-edge.bottom { bottom: 0; }
+
     /* Fondo de la página: capa fija que cubre TODA la pantalla,
        incluso debajo de la barra de estado y la barra inferior de iOS */
     .bg-layer {
@@ -815,6 +836,8 @@
 <body>
   <!-- Fondo de la página -->
   <div class="bg-layer" id="bgLayer" aria-hidden="true"></div>
+  <div class="bg-edge top" id="edgeTop" aria-hidden="true"></div>
+  <div class="bg-edge bottom" id="edgeBottom" aria-hidden="true"></div>
 
   <!-- Tarjeta de perfil -->
   <div class="profile-card" id="profileCard">
@@ -1220,6 +1243,37 @@
     }
 
     const bgLayer = document.getElementById('bgLayer');
+    const edgeTop = document.getElementById('edgeTop');
+    const edgeBottom = document.getElementById('edgeBottom');
+    const DEFAULT_GREEN = '#017C00';
+
+    // Pinta las franjas de los bordes (y el lienzo) con un color dado
+    function setEdgeColors(topColor, bottomColor) {
+      edgeTop.style.backgroundColor = topColor;
+      edgeBottom.style.backgroundColor = bottomColor;
+      document.documentElement.style.backgroundColor = topColor;
+    }
+
+    // Promedia el color de las filas de arriba y de abajo de la imagen
+    function sampleEdgeColors(img) {
+      try {
+        const w = 64, h = 64, band = 3;
+        const c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        const ctx = c.getContext('2d', { willReadFrequently: true });
+        ctx.drawImage(img, 0, 0, w, h);
+        const avg = (y0) => {
+          const d = ctx.getImageData(0, y0, w, band).data;
+          let r = 0, g = 0, b = 0, n = d.length / 4;
+          for (let i = 0; i < d.length; i += 4) { r += d[i]; g += d[i + 1]; b += d[i + 2]; }
+          return 'rgb(' + Math.round(r / n) + ',' + Math.round(g / n) + ',' + Math.round(b / n) + ')';
+        };
+        return { top: avg(0), bottom: avg(h - band) };
+      } catch (e) {
+        return null; // si el navegador no deja leer la imagen, se queda el verde
+      }
+    }
+
     let appliedPeriod = null;
     let bgToken = 0;
 
@@ -1232,12 +1286,15 @@
         if (token !== bgToken) return; // llegó un cambio más nuevo
         if (i >= sources.length) {
           bgLayer.style.backgroundImage = 'none'; // se queda #017C00
+          setEdgeColors(DEFAULT_GREEN, DEFAULT_GREEN);
           return;
         }
         const img = new Image();
         img.onload = () => {
           if (token === bgToken) {
             bgLayer.style.backgroundImage = 'url("' + sources[i] + '")';
+            const edges = sampleEdgeColors(img);
+            if (edges) setEdgeColors(edges.top, edges.bottom);
           }
         };
         img.onerror = () => tryLoad(i + 1);
