@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Mis Inventos | House Cookie</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="shortcut icon" href="favicon.ico">
+
+  <style>
+    /* Fuente personalizada (font.ttf junto al inventos.html) */
+    @font-face {
+      font-family: "HouseFont";
+      src: url("font.ttf") format("truetype");
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      min-height: 100%;
+    }
+
+
+    /* Fondo de la página: capa fija que cubre TODA la pantalla,
+       incluso debajo de la barra de estado y la barra inferior de iOS */
+    .bg-layer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: -1;
+      background-color: #017C00; /* Respaldo si no hay bg.png / bg.jpg */
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      pointer-events: none;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "HouseFont", "Trebuchet MS", "Segoe UI", Verdana, sans-serif;
+    }
+
+    /* ===== Mensaje central ===== */
+    .stage {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px;
+    }
+
+    /* ===== Ventana grande y extendida ===== */
+    .dialog {
+      display: flex;
+      flex-direction: column;
+      width: min(1100px, 100%);
+      min-height: calc(100vh - 80px);
+      border-radius: 34px;
+      overflow: hidden;
+      background: #f1e8dd;
+      box-shadow:
+        0 0 0 3px #17141f,
+        0 14px 32px rgba(0, 0, 0, 0.5);
+    }
+
+    @supports (height: 100dvh) {
+      .dialog { min-height: calc(100dvh - 80px); }
+    }
+
+    /* Franja azul marino de arriba */
+    .dialog-header {
+      position: relative;
+      flex-shrink: 0;
+      height: 104px;
+      background: linear-gradient(180deg, #424d79 0%, #3a4468 100%);
+      border-top: 4px solid #5c6a98;
+      border-bottom: 3px solid #272e4a;
+    }
+
+    /* Brillito en la esquina */
+    .dialog-header::after {
+      content: "";
+      position: absolute;
+      top: 14px;
+      left: 24px;
+      width: 28px;
+      height: 13px;
+      background: rgba(255, 255, 255, 0.55);
+      border-radius: 50%;
+      transform: rotate(-30deg);
+      filter: blur(0.5px);
+    }
+
+    /* Cuerpo color crema (vacío por ahora; crece con el contenido) */
+    .dialog-body {
+      flex: 1;
+      padding: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: #f1e8dd;
+    }
+
+    .dialog-text {
+      font-size: clamp(26px, 4.5vw, 46px);
+      font-weight: 800;
+      line-height: 1.25;
+      color: #5a4538;
+      text-shadow: 0 2px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    /* Franja beige de abajo con el botón de regresar */
+    .dialog-footer {
+      flex-shrink: 0;
+      height: 96px;
+      background: #d9cdc4;
+      border-bottom: 10px solid #bcaea4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Botón circular plateado (flecha) */
+    .back-btn {
+      position: relative;
+      flex-shrink: 0;
+      width: 52px;
+      height: 52px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+      background: linear-gradient(180deg, #e3e8ef 0%, #a9b4c4 100%);
+      border: 2px solid #6b7a91;
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 2px #1d2738,
+        inset 0 2px 0 rgba(255, 255, 255, 0.7),
+        0 2px 4px rgba(0, 0, 0, 0.45);
+      transition: transform 0.12s ease, filter 0.12s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .back-btn svg { width: 24px; height: 24px; }
+    .back-btn:hover { filter: brightness(1.1); }
+    .back-btn:active { transform: scale(0.92); }
+    .back-btn:focus-visible { outline: 3px solid #1acfea; outline-offset: 4px; }
+
+    @media (max-width: 520px) {
+      .dialog { border-radius: 26px; }
+      .dialog-header { height: 62px; }
+      .dialog-body { padding: 24px 18px; }
+      .dialog-footer { height: 76px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Fondo de la página -->
+  <div class="bg-layer" id="bgLayer" aria-hidden="true"></div>
+
+  <main class="stage">
+    <section class="dialog" aria-label="Mis Inventos">
+      <div class="dialog-header"></div>
+      <div class="dialog-body">
+        <!-- Aquí irán tus inventos; mientras tanto: -->
+        <p class="dialog-text">No hay inventos disponibles, vuelva más tarde</p>
+      </div>
+      <div class="dialog-footer">
+        <a class="back-btn" href="index.html" aria-label="Volver al inicio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#4b5970" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H5"/><path d="M11 6l-6 6 6 6"/></svg>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    /* ===== Fondo de la página (igual que index.html) ===== */
+    // DÍA  (6:30 am a 6:30 pm, hora de México): bg.png o bg.jpg
+    // NOCHE (6:30 pm a 6:30 am, hora de México): bg_night.png o bg_night.jpg
+    // Si no existe la imagen que toca, se queda el verde #017C00
+    const bgSets = {
+      day:   ['bg.png', 'bg.jpg'],
+      night: ['bg_night.png', 'bg_night.jpg']
+    };
+    const DAY_START = 6 * 60 + 30;    // 6:30 am
+    const NIGHT_START = 18 * 60 + 30; // 6:30 pm
+
+    // Minutos transcurridos del día en la Ciudad de México
+    function getMexicoMinutes() {
+      const parts = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'America/Mexico_City',
+        hour: '2-digit',
+        minute: '2-digit',
+        hourCycle: 'h23'
+      }).formatToParts(new Date());
+      const h = parseInt(parts.find(p => p.type === 'hour').value, 10);
+      const m = parseInt(parts.find(p => p.type === 'minute').value, 10);
+      return h * 60 + m;
+    }
+
+    function currentPeriod() {
+      const t = getMexicoMinutes();
+      return (t >= NIGHT_START || t < DAY_START) ? 'night' : 'day';
+    }
+
+    const bgLayer = document.getElementById('bgLayer');
+    let appliedPeriod = null;
+    let bgToken = 0;
+
+    function applyBackground(period) {
+      appliedPeriod = period;
+      const token = ++bgToken;
+      const sources = bgSets[period];
+
+      (function tryLoad(i) {
+        if (token !== bgToken) return; // llegó un cambio más nuevo
+        if (i >= sources.length) {
+          bgLayer.style.backgroundImage = 'none'; // se queda #017C00
+          return;
+        }
+        const img = new Image();
+        img.onload = () => {
+          if (token === bgToken) {
+            bgLayer.style.backgroundImage = 'url("' + sources[i] + '")';
+          }
+        };
+        img.onerror = () => tryLoad(i + 1);
+        img.src = sources[i];
+      })(0);
+    }
+
+    function checkBackground() {
+      const period = currentPeriod();
+      if (period !== appliedPeriod) applyBackground(period);
+    }
+
+    checkBackground();
+    setInterval(checkBackground, 30000); // revisa cada 30 segundos
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) checkBackground();
+    });
+  </script>
+</body>
+</html>
