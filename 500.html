@@ -6,14 +6,14 @@
   <title>500 Internal Server Error | House Cookie</title>
 
   <!-- Favicon -->
-  <link rel="icon" href="favicon.ico" sizes="any">
-  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="shortcut icon" href="/favicon.ico">
 
   <style>
     /* Fuente personalizada (font.ttf junto al 500.html) */
     @font-face {
       font-family: "HouseFont";
-      src: url("font.ttf") format("truetype");
+      src: url("/font.ttf") format("truetype");
       font-weight: 100 900;
       font-style: normal;
       font-display: swap;
@@ -180,7 +180,7 @@
   <script>
     /* ===== Fondo: solo bg.png o bg.jpg (sin bg_night) ===== */
     // Si no existe ninguno, se queda el verde #017C00
-    const bgSources = ['bg.png', 'bg.jpg'];
+    const bgSources = ['/bg.png', '/bg.jpg'];
 
     (function loadBackground(i) {
       if (i >= bgSources.length) return;
@@ -194,7 +194,7 @@
 
     /* ===== Botón OK: redirige al inicio ===== */
     document.getElementById('okBtn').addEventListener('click', () => {
-      window.location.href = 'index.html';
+      window.location.href = '/';
     });
   </script>
 </body>

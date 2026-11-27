@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Mis Inventos</title>
+  <title>Mis Inventos | House Cookie</title>
 
   <!-- Favicon -->
-  <link rel="icon" href="favicon.ico" sizes="any">
-  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="shortcut icon" href="/favicon.ico">
 
   <style>
     /* Fuente personalizada (font.ttf junto al inventos.html) */
     @font-face {
       font-family: "HouseFont";
-      src: url("font.ttf") format("truetype");
+      src: url("/font.ttf") format("truetype");
       font-weight: 100 900;
       font-style: normal;
       font-display: swap;
@@ -159,11 +159,229 @@
     .back-btn:active { transform: scale(0.92); }
     .back-btn:focus-visible { outline: 3px solid #1acfea; outline-offset: 4px; }
 
+
+    /* ===== Lista de inventos ===== */
+    .dialog-body.has-apps {
+      display: block;
+      text-align: left;
+    }
+
+    .app-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    /* Cada app: barra crema encajada, como en el juego */
+    .app-row {
+      position: relative;
+      display: flex;
+      align-items: stretch;
+      height: 104px;
+      background: #feebcb;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 3px #17141f,
+        inset 0 0 0 4px #ffffff,
+        0 4px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Zona café de la izquierda con el icono */
+    .app-icon-zone {
+      flex-shrink: 0;
+      width: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #dfc28f;
+      margin: 4px 0 4px 4px;
+      border-radius: 20px 0 0 20px;
+    }
+
+    .app-icon {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 16px;
+      background: #c9aa74;
+      box-shadow: 0 0 0 3px #17141f, 0 2px 4px rgba(0, 0, 0, 0.35);
+    }
+
+    .app-name {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      padding: 0 16px 0 24px;
+      font-size: clamp(22px, 3.2vw, 34px);
+      font-weight: 800;
+      line-height: 1.15;
+      color: #5a4538;
+      text-shadow: 0 2px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    /* Botón azul ">>" */
+    .go-btn {
+      position: relative;
+      flex-shrink: 0;
+      align-self: center;
+      width: 116px;
+      height: 58px;
+      margin-right: 16px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+      background: linear-gradient(180deg, #4fc3ff 0%, #1e90f0 55%, #1478d8 100%);
+      border: 3px solid #17141f;
+      border-radius: 18px;
+      box-shadow:
+        inset 0 3px 0 rgba(255, 255, 255, 0.5),
+        inset 0 -5px 0 rgba(0, 0, 0, 0.15),
+        0 3px 5px rgba(0, 0, 0, 0.3);
+      transition: transform 0.12s ease, filter 0.12s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .go-btn::before {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: 10px;
+      width: 24px;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.75);
+      border-radius: 50%;
+      transform: rotate(-20deg);
+    }
+    .go-btn svg {
+      width: 36px;
+      height: 30px;
+      filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.25));
+    }
+    .go-btn:hover { filter: brightness(1.1); }
+    .go-btn:active { transform: scale(0.94); }
+    .go-btn:focus-visible { outline: 3px solid #ffffff; outline-offset: 3px; }
+
+    /* ===== Ventana de descripción de la app ===== */
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.55);
+      --w: min(560px, 92vw, calc((100vh - 40px) / 1.5));
+    }
+    @supports (height: 100dvh) {
+      .modal { --w: min(560px, 92vw, calc((100dvh - 40px) / 1.5)); }
+    }
+    .modal.show { display: flex; }
+
+    .modal-stage {
+      width: var(--w);
+      position: relative;
+      /* espacio arriba para la imagen de la app */
+      margin-top: calc(var(--w) * 0.44);
+    }
+    .modal-stage.no-peek { margin-top: 0; }
+
+    .modal-box { animation: pop-in 0.38s cubic-bezier(0.3, 1.6, 0.5, 1) both; }
+    .modal.closing .modal-box { animation: pop-out 0.22s ease-in both; }
+    @keyframes pop-in {
+      0%   { transform: translateY(40px) scale(0.7); opacity: 0; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    @keyframes pop-out {
+      0%   { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(40px) scale(0.7); opacity: 0; }
+    }
+
+    /* Imagen de la interfaz de la app, asomando detrás del mensaje */
+    .peek {
+      position: absolute;
+      left: 50%;
+      bottom: calc(100% - 8px);
+      width: 72%;
+      aspect-ratio: 704 / 454;
+      transform: translateX(-50%);
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .peek img {
+      display: block;
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.3));
+    }
+
+    .modal-dialog {
+      position: relative;
+      z-index: 1;
+      border-radius: 30px;
+      overflow: hidden;
+      background: #f1e8dd;
+      box-shadow: 0 0 0 3px #17141f, 0 12px 28px rgba(0, 0, 0, 0.5);
+    }
+    .modal-header {
+      position: relative;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 20px;
+      background: linear-gradient(180deg, #424d79 0%, #3a4468 100%);
+      border-top: 4px solid #5c6a98;
+      border-bottom: 3px solid #272e4a;
+      color: #ffffff;
+      font-size: clamp(20px, 4.5vw, 28px);
+      font-weight: 800;
+      -webkit-text-stroke: 4px #272e4a;
+      paint-order: stroke fill;
+      text-align: center;
+    }
+    .modal-body {
+      min-height: 120px;
+      max-height: calc(var(--w) * 0.45);
+      overflow-y: auto;
+      padding: 26px 28px;
+      background: #f1e8dd;
+      font-size: clamp(18px, 3.6vw, 24px);
+      font-weight: 800;
+      line-height: 1.35;
+      color: #5a4538;
+      text-shadow: 0 2px 0 rgba(255, 255, 255, 0.7);
+      text-align: center;
+      white-space: pre-line;
+    }
+    .modal-footer {
+      height: 84px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #d9cdc4;
+      border-bottom: 9px solid #bcaea4;
+    }
+    .modal-footer .go-btn { margin-right: 0; }
+
     @media (max-width: 520px) {
       .dialog { border-radius: 26px; }
       .dialog-header { height: 62px; }
       .dialog-body { padding: 24px 18px; }
       .dialog-footer { height: 76px; }
+      .app-row { height: 88px; border-radius: 20px; }
+      .app-icon-zone { width: 96px; }
+      .app-icon { width: 64px; height: 64px; border-radius: 13px; }
+      .app-name { padding: 0 8px 0 14px; font-size: 20px; }
+      .go-btn { width: 80px; height: 48px; margin-right: 10px; border-radius: 15px; }
+      .go-btn svg { width: 28px; height: 24px; }
+      .modal-body { padding: 18px 16px; }
     }
   </style>
 </head>
@@ -174,9 +392,10 @@
   <main class="stage">
     <section class="dialog" aria-label="Mis Inventos">
       <div class="dialog-header"></div>
-      <div class="dialog-body">
-        <!-- Aquí irán tus inventos; mientras tanto: -->
-        <p class="dialog-text">No hay inventos disponibles, vuelva más tarde</p>
+      <div class="dialog-body" id="appsBody">
+        <!-- Lista de inventos (se arma con el arreglo "apps" del script) -->
+        <div class="app-list" id="appList"></div>
+        <p class="dialog-text" id="emptyText" hidden>No hay inventos disponibles, vuelva más tarde</p>
       </div>
       <div class="dialog-footer">
         <a class="back-btn" href="/" aria-label="Volver al inicio">
@@ -186,14 +405,33 @@
     </section>
   </main>
 
+
+  <!-- Ventana de descripción de la app -->
+  <div class="modal" id="appModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-stage" id="modalStage">
+      <div class="modal-box">
+        <div class="peek" id="modalPeek" aria-hidden="true">
+          <img id="modalShot" alt="">
+        </div>
+        <div class="modal-dialog">
+          <div class="modal-header" id="modalTitle"></div>
+          <div class="modal-body" id="modalDesc"></div>
+          <div class="modal-footer">
+            <a class="go-btn" id="modalGo" href="#" aria-label="Abrir la app"><svg viewBox="0 0 36 30" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M6 5l10 10L6 25M18 5l10 10-10 10" stroke="#17141f" stroke-width="9"/><path d="M6 5l10 10L6 25M18 5l10 10-10 10" stroke="#ffffff" stroke-width="4.5"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     /* ===== Fondo de la página (igual que index.html) ===== */
     // DÍA  (6:30 am a 6:30 pm, hora de México): bg.png o bg.jpg
     // NOCHE (6:30 pm a 6:30 am, hora de México): bg_night.png o bg_night.jpg
     // Si no existe la imagen que toca, se queda el verde #017C00
     const bgSets = {
-      day:   ['bg.png', 'bg.jpg'],
-      night: ['bg_night.png', 'bg_night.jpg']
+      day:   ['/bg.png', '/bg.jpg'],
+      night: ['/bg_night.png', '/bg_night.jpg']
     };
     const DAY_START = 6 * 60 + 30;    // 6:30 am
     const NIGHT_START = 18 * 60 + 30; // 6:30 pm
@@ -252,6 +490,147 @@
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden) checkBackground();
     });
+
+    /* ===== Mis inventos (apps) =====
+       Para agregar otra app, copia un bloque { ... } dentro de este arreglo.
+       icon: nombre SIN extensión (busca .png y luego .jpg), ej. "app-pruebas-icon"
+       shot: imagen de la interfaz, igual, sin extensión
+       link: a dónde manda el botón ">>" ('' = todavía no hay link) */
+    const apps = [
+      {
+        name: 'App para pruebas',
+        icon: 'app-pruebas-icon',
+        shot: 'app-pruebas-shot',
+        description: 'Aquí va la descripción completa de la app.\nPuedes escribir varias líneas.',
+        link: ''
+      }
+    ];
+
+    const CHEVRON = '<svg viewBox="0 0 36 30" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M6 5l10 10L6 25M18 5l10 10-10 10" stroke="#17141f" stroke-width="9"/><path d="M6 5l10 10L6 25M18 5l10 10-10 10" stroke="#ffffff" stroke-width="4.5"/></svg>';
+    // Icono de respaldo mientras no exista la imagen
+    const PLACEHOLDER = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80"><rect width="80" height="80" fill="#c9aa74"/>' +
+      '<text x="40" y="54" font-size="44" font-weight="900" text-anchor="middle" fill="#fff4dc" font-family="Arial">?</text></svg>');
+
+    // Imagen de interfaz de respaldo (rectangular) mientras no exista la real
+    const SHOT_PLACEHOLDER = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 704 783"><rect width="704" height="783" fill="#c9aa74"/>' +
+      '<rect x="24" y="24" width="656" height="735" rx="26" fill="#dfc28f" stroke="#a88b57" stroke-width="6"/>' +
+      '<path d="M24 640l190-210 130 140 110-100 226 190v99H24z" fill="#c9aa74" opacity=".7"/>' +
+      '<circle cx="530" cy="200" r="46" fill="#feebcb" opacity=".9"/>' +
+      '<text x="352" y="330" font-size="64" font-weight="900" text-anchor="middle" fill="#fff4dc" font-family="Arial">Imagen de la app</text></svg>');
+
+    // Prueba nombre.png y luego nombre.jpg
+    function loadImg(imgEl, base, onFail) {
+      if (!/^(\/|https?:)/.test(base)) base = '/' + base; // ruta desde la raíz del sitio
+      const exts = ['.png', '.jpg'];
+      (function tryLoad(i) {
+        if (i >= exts.length) { onFail && onFail(); return; }
+        const t = new Image();
+        t.onload = () => { imgEl.src = base + exts[i]; };
+        t.onerror = () => tryLoad(i + 1);
+        t.src = base + exts[i];
+      })(0);
+    }
+
+    const appList = document.getElementById('appList');
+    const appsBody = document.getElementById('appsBody');
+    const emptyText = document.getElementById('emptyText');
+
+    function buildList() {
+      appList.innerHTML = '';
+      if (!apps.length) { emptyText.hidden = false; appsBody.classList.remove('has-apps'); return; }
+      emptyText.hidden = true;
+      appsBody.classList.add('has-apps');
+
+      apps.forEach((app) => {
+        const row = document.createElement('div');
+        row.className = 'app-row';
+
+        const zone = document.createElement('div');
+        zone.className = 'app-icon-zone';
+        const icon = document.createElement('img');
+        icon.className = 'app-icon';
+        icon.alt = '';
+        icon.src = PLACEHOLDER;
+        loadImg(icon, app.icon);
+        zone.appendChild(icon);
+
+        const name = document.createElement('div');
+        name.className = 'app-name';
+        name.textContent = app.name;
+
+        const btn = document.createElement('button');
+        btn.className = 'go-btn';
+        btn.type = 'button';
+        btn.setAttribute('aria-label', 'Ver ' + app.name);
+        btn.innerHTML = CHEVRON;
+        btn.addEventListener('click', () => openModal(app));
+
+        row.append(zone, name, btn);
+        appList.appendChild(row);
+      });
+    }
+
+    /* ===== Ventana de descripción ===== */
+    const modal = document.getElementById('appModal');
+    const modalStage = document.getElementById('modalStage');
+    const modalShot = document.getElementById('modalShot');
+    const modalGo = document.getElementById('modalGo');
+    let lastFocus = null;
+
+    function openModal(app) {
+      lastFocus = document.activeElement;
+      document.getElementById('modalTitle').textContent = app.name;
+      document.getElementById('modalDesc').textContent = app.description || '';
+
+      // Imagen de la interfaz arriba del mensaje (si no existe, se muestra un placeholder)
+      const showPeek = () => {
+        modalStage.classList.remove('no-peek');
+        modalShot.parentElement.style.display = '';
+      };
+      modalShot.onload = showPeek;
+      modalShot.removeAttribute('src');
+      modalStage.classList.add('no-peek');
+      modalShot.parentElement.style.display = 'none';
+      loadImg(modalShot, app.shot, () => { modalShot.src = SHOT_PLACEHOLDER; });
+
+      // Botón ">>": va a la app (por ahora sin link)
+      if (app.link) {
+        modalGo.href = app.link;
+        modalGo.target = '_blank';
+        modalGo.rel = 'noopener';
+      } else {
+        modalGo.removeAttribute('target');
+        modalGo.href = '#';
+      }
+
+      modal.classList.remove('closing');
+      modal.classList.add('show');
+      modal.setAttribute('aria-hidden', 'false');
+      modalGo.focus({ preventScroll: true });
+    }
+
+    function closeModal() {
+      if (!modal.classList.contains('show') || modal.classList.contains('closing')) return;
+      modal.classList.add('closing');
+      setTimeout(() => {
+        modal.classList.remove('show', 'closing');
+        modal.setAttribute('aria-hidden', 'true');
+        if (lastFocus) lastFocus.focus({ preventScroll: true });
+      }, 220);
+    }
+
+    modalGo.addEventListener('click', (e) => {
+      if (!modalGo.getAttribute('href') || modalGo.getAttribute('href') === '#') e.preventDefault();
+    });
+    // Se cierra tocando fuera de la ventana o con Esc
+    modal.addEventListener('click', (e) => {
+      if (!e.target.closest('.modal-box')) closeModal();
+    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+    buildList();
   </script>
 </body>
 </html>
